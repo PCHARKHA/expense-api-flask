@@ -28,7 +28,7 @@ def add_expense():
     expense["amount"]= data["amount"]
     expense["category"]=data["category"]
     expense["note"] = data.get("note") #optional
-    expense["date"] = datetime.now().isoformat()
+    expense["date"] = datetime.now().date().isoformat()
     
     #appending data to to main data(for now)
     expenses_data.append(expense)
@@ -41,7 +41,7 @@ def add_expense():
 # READ - Get all expenses
 @app.route("/expenses", methods=["GET"])
 def get_expenses():
-    return jsonify(expenses_data),404
+    return jsonify(expenses_data),200
 
 
 # READ - Get one expense
@@ -53,7 +53,7 @@ def get_expense(id):
 
     return jsonify({
         "message": "Expense not found"
-    })
+    }),404
 
 
 # UPDATE - Update an expense
