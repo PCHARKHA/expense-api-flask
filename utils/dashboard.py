@@ -7,7 +7,7 @@ def calculate_daily_total(expenses):
     for expense in expenses:
         expense_date = datetime.strptime(expense["date"], "%Y-%m-%d").date()
         if(today == expense_date):
-            total += expense["amount"]
+            daily_total += expense["amount"]
        
     return daily_total
 
@@ -35,6 +35,6 @@ def calculate_monthly_total(expenses):
             expense_date.month == today.month
             and expense_date.year == today.year
         ):
-            total += expense["amount"]
+            monthly_total += expense["amount"]
 
-    return total
+    return monthly_total

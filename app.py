@@ -2,9 +2,8 @@ from flask import Flask, jsonify, request
 from datetime import datetime
 from utils.dashboard import calculate_monthly_total,calculate_weekly_total,calculate_daily_total
 from utils.validation import validate_data
-from data.expenses import ALL_CATEGORIES,expenses_data
+from data.expenses import ALLOWED_CATEGORIES,expenses_data
 
-from data.expenses import expenses_data
 app = Flask(__name__)
 
 
@@ -44,17 +43,21 @@ def add_expense():
 # READ - Get all expenses
 @app.route("/expenses", methods=["GET"])
 def get_expenses():
-    filtered_expenses = []
     category = request.args.get("category")
-    
-    if category in ALL_CATEGORIES:
+
+    if category:
+        if category not in ALLOWED_CATEGORIES:
+            return jsonify({
+                "message": "Category doesn't match"
+            }), 400
+
+        filtered_expenses = []
+
         for expense in expenses_data:
-             if expense["category"] == category:
+            if expense["category"] == category:
                 filtered_expenses.append(expense)
 
-
-    return jsonify(expenses_data),200
-
+    return jsonify(expenses_data), 200
 
 # READ - Get one expense
 @app.route("/expenses/<int:id>", methods=["GET"])
