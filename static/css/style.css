@@ -1,0 +1,355 @@
+/* ==========================================================================
+   PERSONAL FINANCE MANAGER — Add Expense page styles
+   ==========================================================================
+   Color, spacing and sizing values are stored as CSS variables (custom
+   properties) at the top so they are easy to tweak later without hunting
+   through the whole file.
+   ========================================================================== */
+
+   :root {
+    /* Colors */
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-primary: #1B4332;
+    --color-primary: #1B4332;
+    --color-primary-dark: #123D29;
+    --color-primary-light: #76B296;
+    --color-primary-hover: #13472e;      /* deep forest green — main brand color */
+    --color-accent-soft: #E8F0EB;   
+    --color-text: #1C1F1D;
+    --color-text-muted: #6E766F;
+    --color-border: #E2E5E0;
+    --color-danger: #B3261E;
+    --color-danger-soft: #FBEAE9;
+  
+    /* Typography */
+    --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  
+    /* Spacing scale */
+    --space-xs: 6px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 28px;
+    --space-xl: 40px;
+  
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+  }
+  
+  /* ==========================================================================
+     Reset / base
+     ========================================================================== */
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Keeps focus visible for keyboard users instead of removing the outline */
+  button:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* ==========================================================================
+     Page layout
+     ========================================================================== */
+  
+  .page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--space-lg) var(--space-md) var(--space-xl);
+  }
+  
+  .expense-card {
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    padding: var(--space-lg);
+    box-shadow: 0 1px 2px rgba(20, 30, 25, 0.04);
+  }
+  
+  /* ==========================================================================
+     Header
+     ========================================================================== */
+  
+  .expense-header {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .expense-title {
+    margin: 0 0 4px 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  
+  .expense-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+  
+  /* ==========================================================================
+     Form layout
+     ========================================================================== */
+  
+  .expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  
+  .label-optional {
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+  
+  /* ==========================================================================
+     Amount display + custom keypad
+     ========================================================================== */
+  
+  .amount-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  /* Styled like a small calculator screen so the entered amount always
+     stands out clearly from the rest of the form */
+     .amount-display {
+      background-color: var(--color-primary);
+      color: #FFFFFF;
+      border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-md);
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  
+  .amount-display:hover {
+      background-color: var(--color-primary-dark); 
+      transform: translateY(-2px);
+  }
+
+  .currency-symbol {
+    font-size: 1.5rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+  
+  .amount-value {
+    font-size: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    /* Prevents the amount from wrapping oddly on very small screens */
+    word-break: break-all;
+  }
+  
+  /* Keypad grid: 3 keys per row */
+  .numeric-keypad {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .numeric-keypad.active {
+    display: grid;
+}
+  
+  .keypad-key {
+    font-family: inherit;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.05s ease;
+  }
+  
+  .keypad-key:hover {
+    background-color: var(--color-accent-soft);
+    border-color: var(--color-primary);
+  }
+  
+  .keypad-key:active {
+    transform: scale(0.96);
+  }
+  
+  .keypad-decimal {
+    color: var(--color-text-muted);
+  }
+  
+  .keypad-clear {
+    color: var(--color-danger);
+    background-color: var(--color-danger-soft);
+    border-color: transparent;
+  }
+  
+  .keypad-clear:hover {
+    background-color: var(--color-danger);
+    color: #FFFFFF;
+  }
+  
+  /* ==========================================================================
+     Category dropdown
+     ========================================================================== */
+  
+  .category-select {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 40px 12px 14px;
+    cursor: pointer;
+  
+    /* Remove default browser arrow and draw a custom one instead */
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E766F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 18px;
+  }
+  
+  .category-select:hover {
+    border-color: var(--color-primary);
+  }
+  
+  /* ==========================================================================
+     Note field
+     ========================================================================== */
+  
+  .expense-note {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 48px;
+  }
+  
+  .expense-note:hover {
+    border-color: var(--color-primary);
+  }
+  
+  .expense-note::placeholder {
+    color: var(--color-text-muted);
+  }
+  
+  /* ==========================================================================
+     Submit button
+     ========================================================================== */
+  
+  .submit-expense-btn {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  
+  .submit-expense-btn:hover {
+    background-color: var(--color-primary-dark);
+  }
+  
+  .submit-expense-btn:active {
+    transform: scale(0.99);
+  }
+
+  /* ==========================================================================
+   Form messages
+   ========================================================================== */
+
+.form-message {
+  display: none;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-message.success {
+  display: block;
+  color: var(--color-primary);
+  background-color: var(--color-accent-soft);
+  border: 1px solid #B8D4C1;
+}
+
+.form-message.error {
+  display: block;
+  color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+  border: 1px solid #E8B4B0;
+}
+  
+  /* ==========================================================================
+     Responsive adjustments
+     ========================================================================== */
+  
+  /* Small phones: tighten padding so nothing feels cramped */
+  @media (max-width: 360px) {
+    .expense-card {
+      padding: var(--space-md);
+    }
+  
+    .amount-value {
+      font-size: 2.25rem;
+    }
+  }
+  
+  /* Larger screens: give the card a bit more breathing room and center
+     it vertically instead of pinning it to the top */
+  @media (min-width: 768px) {
+    .page-wrapper {
+      align-items: center;
+    }
+  
+    .expense-card {
+      padding: var(--space-xl);
+    }
+  }

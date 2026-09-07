@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request,render_template
 from datetime import datetime
 from utils.dashboard import calculate_monthly_total,calculate_weekly_total,calculate_daily_total
 from utils.validation import validate_data
@@ -6,6 +6,23 @@ from data.expenses import ALLOWED_CATEGORIES,expenses_data
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/add-expense")
+def add_expense_page():
+    return render_template("add_expense.html")
+
+
+@app.route("/dashboard")
+def dashboard_page():
+    return render_template("dashboard.html")
+
+
+@app.route("/all_expenses")
+def expenses_page():
+    return render_template("all_expenses.html")
 
 # CREATE - Add an expense
 @app.route("/expenses", methods=["POST"])
