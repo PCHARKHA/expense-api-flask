@@ -120,6 +120,29 @@
     border-radius: var(--radius-sm);
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   }
+
+  .view-expenses-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 10px 18px;
+
+    color: #24483b;
+    background-color: transparent;
+    border: 1px solid #24483b;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.view-expenses-link:hover {
+    background-color: #24483b;
+    color: #ffffff;
+}
   
   /* Primary action: solid fill, matches the brand green */
   .btn-primary {
@@ -166,3 +189,5 @@
       text-align: center;
     }
   }
+
+  

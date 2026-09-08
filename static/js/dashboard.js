@@ -1,3 +1,4 @@
+import { formatExpenseDate } from "./utils.js";
 async function loadDashboard() {
     try {
         const response = await fetch("/expenses");
@@ -114,26 +115,10 @@ function displayRecentExpenses(expenses){
     });
 }
 
-
-function formatExpenseDate(expenseDate) {
-    const today = new Date();
-    const expenseDateObject = new Date(expenseDate);
-
-    today.setHours(0, 0, 0, 0);
-    expenseDateObject.setHours(0, 0, 0, 0);
-
-    const differenceInMilliseconds = today - expenseDateObject;
-    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-     
-    if (differenceInDays === 0) {
-        return "Today";
-    }
-
-    if (differenceInDays === 1) {
-        return "Yesterday";
-    }
-
-    return `${differenceInDays} days ago`;
-}
+// const viewAllLink = document.getElementById("view-all-link");
+// viewAllLink.addEventListener("click", function (event) {
+//     event.preventDefault();
+//     window.location.href = "/all_expenses";
+// });
 
 loadDashboard();

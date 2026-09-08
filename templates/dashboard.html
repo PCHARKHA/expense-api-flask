@@ -94,10 +94,10 @@
 
       </div>
 
-      <a href="#" class="view-all-link">View All Expenses</a>
+      <a href="{{ url_for('expenses_page') }}" class="view-all-link" id="view-all-link">View All Expenses</a>
     </section>
 
   </main>
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script type ="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,335 @@
+/* ==========================================================================
+   PERSONAL FINANCE MANAGER — All Expenses page styles
+   ==========================================================================
+   Same palette and spacing scale as add_expense.html and dashboard.css,
+   so this page reads as part of the same application. Shadows are kept
+   very light here — mostly borders do the work of separating elements.
+   ========================================================================== */
+
+   :root {
+    /* Colors */
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-primary: #1B4332;
+    --color-primary-hover: #163C2B;
+    --color-text: #1C1F1D;
+    --color-text-muted: #6E766F;
+    --color-border: #E2E5E0;
+  
+    /* Category tag colors (soft, low-saturation) */
+    --color-food-bg: #FDEBD8;
+    --color-food-text: #B4622A;
+  
+    --color-transport-bg: #E4F0FB;
+    --color-transport-text: #2E6FA6;
+  
+    --color-groceries-bg: #E6F3EC;
+    --color-groceries-text: #2F855A;
+  
+    --color-entertainment-bg: #F3E8FB;
+    --color-entertainment-text: #7A3FA0;
+  
+    --color-bills-bg: #FCE8E8;
+    --color-bills-text: #B3453D;
+  
+    --color-health-bg: #E4F6F3;
+    --color-health-text: #1F7A6C;
+  
+    /* Typography */
+    --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  
+    /* Spacing scale */
+    --space-xs: 6px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 28px;
+    --space-xl: 40px;
+  
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+  }
+  
+  /* ==========================================================================
+     Reset / base
+     ========================================================================== */
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* ==========================================================================
+     NAVIGATION
+     ========================================================================== */
+  
+  .site-nav {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .nav-link {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+  
+  /* ==========================================================================
+     PAGE WRAPPER
+     ========================================================================== */
+  
+  .all-expenses-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  /* ==========================================================================
+     PAGE HEADING
+     ========================================================================== */
+  
+  .page-header {
+    text-align: left;
+  }
+  
+  .page-heading {
+    margin: 0 0 4px 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+  }
+  
+  .page-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+  
+  /* ==========================================================================
+     FILTER SECTION
+     ========================================================================== */
+  
+  .filter-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+  
+  .filter-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  
+  .category-filter {
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 38px 10px 14px;
+    cursor: pointer;
+    min-width: 180px;
+  
+    /* Custom dropdown arrow, no external icon library needed */
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E766F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    transition: border-color 0.15s ease;
+  }
+  
+  .category-filter:hover {
+    border-color: var(--color-primary);
+  }
+  
+  /* ==========================================================================
+     EXPENSES SECTION
+     ========================================================================== */
+  
+  .expenses-section {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+  }
+  
+  .all-expenses-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* ----------------------------------------------------------------------
+     Expense item
+     ------------------------------------------------------------------------
+     These elements will be created dynamically by all_expenses.js.
+     Each one is expected to follow this structure:
+  
+     <div class="expense-item">
+       <span class="category-tag category-food">Food</span>
+       <span class="expense-note">Lunch with team</span>
+       <span class="expense-amount">₹ 350</span>
+       <span class="expense-date">Today</span>
+     </div>
+     ---------------------------------------------------------------------- */
+  
+  .expense-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.15s ease;
+  }
+  
+  .expense-item:last-child {
+    border-bottom: none;
+  }
+  
+  .expense-item:hover {
+    background-color: var(--color-bg);
+  }
+  
+  /* Category tag */
+  .category-tag {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  
+  .category-food {
+    background-color: var(--color-food-bg);
+    color: var(--color-food-text);
+  }
+  
+  .category-transport {
+    background-color: var(--color-transport-bg);
+    color: var(--color-transport-text);
+  }
+  
+  .category-groceries {
+    background-color: var(--color-groceries-bg);
+    color: var(--color-groceries-text);
+  }
+  
+  .category-entertainment {
+    background-color: var(--color-entertainment-bg);
+    color: var(--color-entertainment-text);
+  }
+  
+  .category-bills {
+    background-color: var(--color-bills-bg);
+    color: var(--color-bills-text);
+  }
+  
+  .category-health {
+    background-color: var(--color-health-bg);
+    color: var(--color-health-text);
+  }
+  
+  /* Note fills the remaining space between the tag and amount/date */
+  .expense-note {
+    flex: 1 1 auto;
+    font-size: 0.92rem;
+    color: var(--color-text);
+  }
+  
+  /* Amount is the clearest, boldest number in the row */
+  .expense-amount {
+    flex: 0 0 auto;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+  }
+  
+  /* Date stays subtle and secondary */
+  .expense-date {
+    flex: 0 0 auto;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    min-width: 80px;
+    text-align: right;
+  }
+  
+  /* ==========================================================================
+     EMPTY STATE
+     ========================================================================== */
+  
+  .empty-state {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+  }
+  
+  .empty-state-message {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+  
+  /* ==========================================================================
+     Responsive adjustments
+     ========================================================================== */
+  
+  @media (max-width: 560px) {
+    .filter-section {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .category-filter {
+      width: 100%;
+    }
+  
+    .expense-item {
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+  
+    .expense-note {
+      flex: 1 1 100%;
+      order: 3;
+    }
+  
+    .expense-date {
+      text-align: left;
+      min-width: 0;
+    }
+}
