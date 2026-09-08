@@ -105,6 +105,28 @@
     color: var(--color-text-muted);
   }
   
+  .page-navigation {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 8px;
+}
+
+.page-navigation a {
+    color: #24483b;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.page-navigation a:hover {
+    color: #3b7562;
+    text-decoration: underline;
+}
+
+.page-navigation span {
+  color: #8a8f8c;
+}
   /* ==========================================================================
      Form layout
      ========================================================================== */
