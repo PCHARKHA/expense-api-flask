@@ -1,23 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Personal Finance Manager</title>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Finance Manager</title>
 
+  <!-- Google Font: Manrope, kept consistent with the Dashboard and Add Expense pages -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
 <body>
 
-    <h1>Personal Finance Manager</h1>
+  <!-- ==========================================================
+       HEADER
+       ========================================================== -->
+  <header class="site-header">
+    <p class="brand-name">Personal Finance Manager</p>
+  </header>
 
-    <p>Welcome to your expense tracker.</p>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/add-expense">Add Expense</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/all_expenses">Expenses</a>
-        </nav>
-    
-        <h2>Welcome!</h2>
-        <p>Track and manage your daily expenses.</p>
+  <!-- ==========================================================
+       HERO SECTION
+       ========================================================== -->
+  <main class="hero-section">
+    <h1 class="hero-heading">Take control of your everyday spending</h1>
+    <p class="hero-description">
+      Personal Finance Manager helps you track your expenses and understand
+      where your money goes, so you can make better decisions with your budget.
+    </p>
+
+    <div class="hero-actions">
+      <a href="{{ url_for('add_expense_page') }}" id="cta-add-expense" class="btn btn-primary">Add Expense</a>
+      <a href="{{ url_for('dashboard_page') }}" id="cta-view-dashboard" class="btn btn-secondary">View Dashboard</a>
+    </div>
+  </main>
 
 </body>
 </html>

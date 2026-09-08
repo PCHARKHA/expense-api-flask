@@ -1,0 +1,168 @@
+/* ==========================================================================
+   PERSONAL FINANCE MANAGER — Landing page (index) styles
+   ==========================================================================
+   Palette and spacing match the Add Expense page so the whole app feels
+   like one product. Kept intentionally subtle — no gradients or extra
+   color here, per the landing page brief.
+   ========================================================================== */
+
+   :root {
+    /* Colors (same brand palette as add_expense.html) */
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-primary: #1B4332;
+    --color-primary-hover: #163C2B;
+    --color-text: #1C1F1D;
+    --color-text-muted: #6E766F;
+    --color-border: #E2E5E0;
+  
+    /* Typography */
+    --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  
+    /* Spacing scale */
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 28px;
+    --space-xl: 40px;
+  
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+  }
+  
+  /* ==========================================================================
+     Reset / base
+     ========================================================================== */
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* ==========================================================================
+     HEADER
+     ========================================================================== */
+  
+  .site-header {
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+  
+  .brand-name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-primary);
+  }
+  
+  /* ==========================================================================
+     HERO SECTION
+     ========================================================================== */
+  
+  .hero-section {
+    min-height: calc(100vh - 65px); /* fills the space below the header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-xl) var(--space-lg);
+  }
+  
+  .hero-heading {
+    margin: 0 0 var(--space-md) 0;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    max-width: 600px;
+  }
+  
+  .hero-description {
+    margin: 0 0 var(--space-lg) 0;
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  
+  /* ==========================================================================
+     CALL-TO-ACTION BUTTONS
+     ========================================================================== */
+  
+  .hero-actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  
+  /* Primary action: solid fill, matches the brand green */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    border: 1px solid var(--color-primary);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+  
+  /* Secondary action: quieter outline style so it doesn't compete
+     with "Add Expense" for attention */
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+  }
+  
+  .btn-secondary:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-surface);
+  }
+  
+  /* ==========================================================================
+     Responsive adjustments
+     ========================================================================== */
+  
+  @media (max-width: 480px) {
+    .hero-heading {
+      font-size: 1.75rem;
+    }
+  
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 280px;
+    }
+  
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Personal Finance Manager</title>
+
+  <!-- Google Font: Manrope, kept consistent with the Add Expense page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+
+  <main class="dashboard-wrapper">
+
+    <!-- ==========================================================
+         HEADER SECTION
+         ========================================================== -->
+    <header class="dashboard-header">
+      <div class="header-text">
+        <h1 class="app-title">Personal Finance Manager</h1>
+        <p class="app-subtitle">Track and understand your spending</p>
+      </div>
+
+      <a href="#" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
+    </header>
+
+    <!-- ==========================================================
+         SUMMARY SECTION (3 cards)
+         ========================================================== -->
+    <section class="summary-section" aria-label="Expense summary">
+
+      <div class="summary-card card-today">
+        <p class="card-label">Today's Expense</p>
+        <p class="card-amount" id="today-total">₹ 500</p>
+      </div>
+
+      <div class="summary-card card-week">
+        <p class="card-label">This Week's Expense</p>
+        <p class="card-amount" id="week-total">₹ 2,300</p>
+      </div>
+
+      <div class="summary-card card-month">
+        <p class="card-label">This Month's Expense</p>
+        <p class="card-amount" id="month-total">₹ 8,750</p>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================
+         RECENT EXPENSES SECTION
+         ========================================================== -->
+    <section class="recent-expenses-section" aria-label="Recent expenses">
+      <h2 class="section-title">Recent Expenses</h2>
+
+      <div class="expense-list" id="expense-list">
+
+        <div class="expense-item">
+          <span class="category-tag category-food">Food</span>
+          <span class="expense-note">Lunch with team</span>
+          <span class="expense-amount">₹ 350</span>
+          <span class="expense-date">Today</span>
+        </div>
+
+        <div class="expense-item">
+          <span class="category-tag category-transport">Transport</span>
+          <span class="expense-note">Cab to office</span>
+          <span class="expense-amount">₹ 180</span>
+          <span class="expense-date">Today</span>
+        </div>
+
+        <div class="expense-item">
+          <span class="category-tag category-groceries">Groceries</span>
+          <span class="expense-note">Weekly grocery shopping</span>
+          <span class="expense-amount">₹ 1,240</span>
+          <span class="expense-date">Yesterday</span>
+        </div>
+
+        <div class="expense-item">
+          <span class="category-tag category-entertainment">Entertainment</span>
+          <span class="expense-note">Movie tickets</span>
+          <span class="expense-amount">₹ 600</span>
+          <span class="expense-date">2 days ago</span>
+        </div>
+
+        <div class="expense-item">
+          <span class="category-tag category-bills">Bills</span>
+          <span class="expense-note">Electricity bill</span>
+          <span class="expense-amount">₹ 1,450</span>
+          <span class="expense-date">3 days ago</span>
+        </div>
+
+      </div>
+
+      <a href="#" class="view-all-link">View All Expenses</a>
+    </section>
+
+  </main>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

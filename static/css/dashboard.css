@@ -1,0 +1,350 @@
+/* ==========================================================================
+   PERSONAL FINANCE MANAGER — Dashboard page styles
+   ==========================================================================
+   All colors, spacing, and rounding values live in CSS variables at the
+   top, so the palette can be adjusted in one place later.
+   ========================================================================== */
+
+   :root {
+    /* Brand color (soft green) */
+    --color-primary: #2F855A;
+    --color-primary-dark: #23694A;
+  
+    /* Page background gradient colors */
+    --color-bg-start: #F2FBF6;
+    --color-bg-end: #FDF7EC;
+  
+    /* Card surface + text */
+    --color-surface: #FFFFFF;
+    --color-text: #1F2937;
+    --color-text-muted: #6B7280;
+    --color-border: #E7EAE5;
+  
+    /* Summary card accents (soft, not too bright) */
+    --color-today-bg: #E6F7EE;
+    --color-today-accent: #2F855A;
+  
+    --color-week-bg: #FDEEDD;
+    --color-week-accent: #DD8A3D;
+  
+    --color-month-bg: #EAF0FB;
+    --color-month-accent: #4C6FA5;
+  
+    /* Category tag colors */
+    --color-food-bg: #FDEBD8;
+    --color-food-text: #B4622A;
+  
+    --color-transport-bg: #E4F0FB;
+    --color-transport-text: #2E6FA6;
+  
+    --color-groceries-bg: #E6F7EE;
+    --color-groceries-text: #2F855A;
+  
+    --color-entertainment-bg: #F3E8FB;
+    --color-entertainment-text: #7A3FA0;
+  
+    --color-bills-bg: #FCE8E8;
+    --color-bills-text: #B3453D;
+  
+    /* Spacing scale */
+    --space-xs: 6px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 28px;
+    --space-xl: 40px;
+  
+    /* Shape */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+  
+    /* Font */
+    --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  }
+  
+  /* ==========================================================================
+     Reset / base
+     ========================================================================== */
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    color: var(--color-text);
+  
+    /* Light, slightly colorful gradient background instead of plain white */
+    background: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-end) 100%);
+    min-height: 100vh;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  a:focus-visible,
+  .add-expense-btn:focus-visible {
+    outline: 2px solid var(--color-primary-dark);
+    outline-offset: 2px;
+  }
+  
+  /* ==========================================================================
+     Page wrapper
+     ========================================================================== */
+  
+  .dashboard-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md) var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+  
+  /* ==========================================================================
+     HEADER SECTION
+     ========================================================================== */
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+  
+  .app-title {
+    margin: 0 0 4px 0;
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-primary-dark);
+  }
+  
+  .app-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+  
+  /* The Add Expense button is the most prominent action on the page,
+     so it gets a bold gradient fill and a soft shadow to lift it up */
+  .add-expense-btn {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #34A06B 0%, var(--color-primary) 100%);
+    padding: 14px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 18px rgba(47, 133, 90, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  
+  .add-expense-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(47, 133, 90, 0.35);
+  }
+  
+  /* ==========================================================================
+     SUMMARY SECTION (3 cards)
+     ========================================================================== */
+  
+  .summary-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-md);
+  }
+  
+  .summary-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: 0 4px 14px rgba(31, 41, 55, 0.06);
+  
+    /* A colored left border gives each card its own identity while
+       keeping the overall card shape consistent */
+    border-left: 5px solid transparent;
+  }
+  
+  .card-label {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  
+  .card-amount {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  
+  /* Individual card accents */
+  .card-today {
+    background-color: var(--color-today-bg);
+    border-left-color: var(--color-today-accent);
+  }
+  .card-today .card-amount {
+    color: var(--color-today-accent);
+  }
+  
+  .card-week {
+    background-color: var(--color-week-bg);
+    border-left-color: var(--color-week-accent);
+  }
+  .card-week .card-amount {
+    color: var(--color-week-accent);
+  }
+  
+  .card-month {
+    background-color: var(--color-month-bg);
+    border-left-color: var(--color-month-accent);
+  }
+  .card-month .card-amount {
+    color: var(--color-month-accent);
+  }
+  
+  /* ==========================================================================
+     RECENT EXPENSES SECTION
+     ========================================================================== */
+  
+  .recent-expenses-section {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: 0 4px 14px rgba(31, 41, 55, 0.06);
+  }
+  
+  .section-title {
+    margin: 0 0 var(--space-md) 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  
+  .expense-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .expense-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .expense-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Category tag: small colored pill so the category is easy to spot at a glance */
+  .category-tag {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  
+  .category-food {
+    background-color: var(--color-food-bg);
+    color: var(--color-food-text);
+  }
+  
+  .category-transport {
+    background-color: var(--color-transport-bg);
+    color: var(--color-transport-text);
+  }
+  
+  .category-groceries {
+    background-color: var(--color-groceries-bg);
+    color: var(--color-groceries-text);
+  }
+  
+  .category-entertainment {
+    background-color: var(--color-entertainment-bg);
+    color: var(--color-entertainment-text);
+  }
+  
+  .category-bills {
+    background-color: var(--color-bills-bg);
+    color: var(--color-bills-text);
+  }
+  
+  /* The note takes up the remaining space between the tag and the amount/date */
+  .expense-note {
+    flex: 1 1 auto;
+    font-size: 0.92rem;
+    color: var(--color-text);
+  }
+  
+  .expense-amount {
+    flex: 0 0 auto;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+  }
+  
+  .expense-date {
+    flex: 0 0 auto;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    min-width: 80px;
+    text-align: right;
+  }
+  
+  /* "View All Expenses" link below the list */
+  .view-all-link {
+    display: inline-block;
+    margin-top: var(--space-md);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+  }
+  
+  .view-all-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+  
+  /* ==========================================================================
+     Responsive adjustments
+     ========================================================================== */
+  
+  /* Tablets and small laptops: header stays in a row, cards wrap naturally
+     via the summary-section grid already defined above */
+  
+  /* Phones: stack the expense row items instead of squeezing them in a line */
+  @media (max-width: 560px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .add-expense-btn {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .expense-item {
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+  
+    .expense-note {
+      flex: 1 1 100%;
+      order: 3;
+    }
+  
+    .expense-date {
+      text-align: left;
+      min-width: 0;
+    }
+  }
