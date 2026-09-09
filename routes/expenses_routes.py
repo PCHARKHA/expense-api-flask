@@ -1,12 +1,17 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime
-from app import app
-
+from utils.dashboard import (
+    calculate_monthly_total,
+    calculate_weekly_total,
+    calculate_daily_total
+)
 from utils.validation import validate_data
 from data.expenses import expenses_data
 
+expense_bp = Blueprint("expenses",__name__)
+
 # CREATE - Add an expense
-@app.route("/expenses", methods=["POST"])
+@expense_bp.route("/expenses", methods=["POST"])
 def add_expense():
     data = request.get_json()
     #Check if data exists
@@ -39,13 +44,13 @@ def add_expense():
     }),201
 
 # READ - Get all expenses
-@app.route("/expenses", methods=["GET"])
+@expense_bp.route("/expenses", methods=["GET"])
 def get_expenses():
     return jsonify(expenses_data),200
 
 
 # READ - Get one expense
-@app.route("/expenses/<int:id>", methods=["GET"])
+@expense_bp.route("/expenses/<int:id>", methods=["GET"])
 def get_expense(id):
     for expense in expenses_data:
         if expense["id"] == id:
@@ -57,7 +62,7 @@ def get_expense(id):
 
 
 # UPDATE - Update an expense
-@app.route("/expenses/<int:id>", methods=["PUT"])
+@expense_bp.route("/expenses/<int:id>", methods=["PUT"])
 def update_expense(id):
     data = request.get_json()
     if data is None:
@@ -76,7 +81,7 @@ def update_expense(id):
             expense["amount"] = data["amount"]
             expense["category"] = data["category"]
             expense["note"] = data.get("note") #optional
-            expense["date"] = datetime.now().isoformat()
+            expense["date"] = datetime.now().date().isoformat()
 
             return jsonify({
                 "message": "Expense updated successfully",
@@ -89,7 +94,7 @@ def update_expense(id):
 
 
 # DELETE - Delete an expense
-@app.route("/expenses/<int:id>", methods=["DELETE"])
+@expense_bp.route("/expenses/<int:id>", methods=["DELETE"])
 def delete_expense(id):
     for expense in expenses_data:
         if expense["id"] == id:
@@ -102,3 +107,15 @@ def delete_expense(id):
     return jsonify({
         "message": "Expense not found"
     }),404
+
+@expense_bp.route("/expenses/dashboard", methods=["GET"])
+def get_dashboard():
+    daily_total = calculate_daily_total(expenses_data)
+    weekly_total = calculate_weekly_total(expenses_data)
+    monthly_total = calculate_monthly_total(expenses_data)
+
+    return jsonify({
+        "daily_total": daily_total,
+        "weekly_total": weekly_total,
+        "monthly_total": monthly_total
+    }), 200
