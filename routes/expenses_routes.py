@@ -6,7 +6,8 @@ from utils.dashboard import (
     calculate_daily_total
 )
 from utils.validation import validate_data
-from data.expenses import expenses_data
+from utils.database import (create_expense,get_expenses,
+                            get_expense_by_id,update_expense_in_db,delete_expense_in_db)
 
 expense_bp = Blueprint("expenses",__name__)
 
@@ -26,17 +27,14 @@ def add_expense():
             "message": error
         }), 400
     
-    #Creating an expense object
-    expense = {}
-    new_id = max([expense["id"] for expense in expenses_data], default=0) + 1
-    expense["id"]= new_id
-    expense["amount"]= data["amount"]
-    expense["category"]=data["category"]
-    expense["note"] = data.get("note") #optional
-    expense["date"] = datetime.now().date().isoformat()
+    date = datetime.now().date().isoformat()
     
-    #appending data to to main data(for now)
-    expenses_data.append(expense)
+    expense = create_expense(
+        data["amount"],
+        data["category"],
+        data.get("note"),
+        date
+    )
 
     return jsonify({
         "message": "Expense added successfully",
@@ -45,16 +43,19 @@ def add_expense():
 
 # READ - Get all expenses
 @expense_bp.route("/expenses", methods=["GET"])
-def get_expenses():
-    return jsonify(expenses_data),200
+def get_all_expenses():
+    category = request.args.get("category")
+    expenses = get_expenses(category)
+    
+    return jsonify(expenses), 200
 
 
 # READ - Get one expense
 @expense_bp.route("/expenses/<int:id>", methods=["GET"])
 def get_expense(id):
-    for expense in expenses_data:
-        if expense["id"] == id:
-            return jsonify(expense)
+    expense_row = get_expense_by_id(id)
+    if expense_row:
+        return jsonify(expense_row)
 
     return jsonify({
         "message": "Expense not found"
@@ -76,43 +77,52 @@ def update_expense(id):
             "message": error
         }), 400
     
-    for expense in expenses_data:
-        if expense["id"] == id:
-            expense["amount"] = data["amount"]
-            expense["category"] = data["category"]
-            expense["note"] = data.get("note") #optional
-            expense["date"] = datetime.now().date().isoformat()
+    expense = get_expense_by_id(id)
 
-            return jsonify({
-                "message": "Expense updated successfully",
-                "expense": expense
-            }),200
+    if expense is None:
+        return jsonify({
+            "message": "Expense not found"
+        }), 404
 
+    date = datetime.now().date().isoformat()
+
+    update_expense_in_db(
+        id,
+        data["amount"],
+        data["category"],
+        data.get("note"),
+        date
+    )
+
+    updated_expense = get_expense_by_id(id)
     return jsonify({
-        "message": "Expense not found"
-    }),404
-
+        "message": "Expense updated successfully",
+        "expense": updated_expense
+            }),200
 
 # DELETE - Delete an expense
 @expense_bp.route("/expenses/<int:id>", methods=["DELETE"])
 def delete_expense(id):
-    for expense in expenses_data:
-        if expense["id"] == id:
-            expenses_data.remove(expense)
+    expense = get_expense_by_id(id)
 
-            return jsonify({
-                "message": "Expense deleted successfully"
-            })
+    if expense is None:
+        return jsonify({
+            "message": "Expense not found"
+        }), 404
+
+    delete_expense_in_db(id)
 
     return jsonify({
-        "message": "Expense not found"
-    }),404
+        "message": "Expense deleted successfully"
+    }), 200
 
 @expense_bp.route("/expenses/dashboard", methods=["GET"])
 def get_dashboard():
-    daily_total = calculate_daily_total(expenses_data)
-    weekly_total = calculate_weekly_total(expenses_data)
-    monthly_total = calculate_monthly_total(expenses_data)
+    expenses = get_expenses()
+
+    daily_total = calculate_daily_total(expenses)
+    weekly_total = calculate_weekly_total(expenses)
+    monthly_total = calculate_monthly_total(expenses)
 
     return jsonify({
         "daily_total": daily_total,

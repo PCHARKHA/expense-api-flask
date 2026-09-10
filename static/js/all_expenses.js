@@ -16,8 +16,16 @@ async function loadAllExpenses() {
 
 function displayExpenses(expenses) {
     const expensesList = document.getElementById("all-expenses-list");
+    const emptyState = document.getElementById("empty-state");
+
     expensesList.innerHTML = "";
 
+    if (expenses.length === 0) {
+        emptyState.style.display = "block";
+    } else {
+        emptyState.style.display = "none";
+    }
+   
     expenses.forEach(function (expense) {
         const expenseItem = document.createElement("div");
         expenseItem.classList.add("expense-item");
