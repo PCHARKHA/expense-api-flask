@@ -205,6 +205,10 @@
        <span class="expense-note">Lunch with team</span>
        <span class="expense-amount">₹ 350</span>
        <span class="expense-date">Today</span>
+       <span class="expense-actions">
+         <button class="edit-expense-btn" type="button">Edit</button>
+         <button class="delete-expense-btn" type="button">Delete</button>
+       </span>
      </div>
      ---------------------------------------------------------------------- */
   
@@ -289,6 +293,46 @@
     text-align: right;
   }
   
+  /* Action buttons (Edit / Delete) — inserted dynamically by all_expenses.js */
+  .expense-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .edit-expense-btn,
+  .delete-expense-btn {
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .edit-expense-btn {
+    color: var(--color-primary);
+  }
+
+  .edit-expense-btn:hover {
+    background-color: var(--color-bg);
+    border-color: var(--color-primary);
+  }
+
+  .delete-expense-btn {
+    color: var(--color-bills-text);
+  }
+
+  .delete-expense-btn:hover {
+    background-color: var(--color-bills-bg);
+    border-color: var(--color-bills-text);
+  }
+
   /* ==========================================================================
      EMPTY STATE
      ========================================================================== */
@@ -332,4 +376,115 @@
       text-align: left;
       min-width: 0;
     }
+
+    .expense-actions {
+      order: 4;
+      margin-left: auto;
+    }
+}
+
+/* ==========================================================
+   EDIT EXPENSE CARD
+   ========================================================== */
+
+   .edit-card {
+    width: min(420px, 90%);
+    padding: 28px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 1000;
+}
+
+.edit-card h2 {
+    margin: 0 0 24px;
+    color: #1B4332;
+    font-size: 22px;
+}
+
+.edit-card label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.edit-card input,
+.edit-card select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    margin-bottom: 18px;
+
+    border: 1px solid #D9E2DC;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.edit-card input:focus,
+.edit-card select:focus {
+    outline: none;
+    border-color: #1B4332;
+}
+
+.edit-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.edit-card-actions button {
+    flex: 1;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.update-expense-btn {
+    background: #1B4332;
+    color: #FFFFFF;
+}
+
+.update-expense-btn:hover {
+    background: #143728;
+}
+
+.cancel-edit-btn {
+    background: #E9EFEB;
+    color: #1B4332;
+}
+
+.cancel-edit-btn:hover {
+    background: #DDE7E1;
+}
+
+.action-message {
+  display: none;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+
+  background: #E8F3EC;
+  color: #1B4332;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.action-message.error {
+  background: #FDECEC;
+  color: #B42318;
 }
