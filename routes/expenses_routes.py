@@ -33,7 +33,9 @@ def add_expense():
         data["amount"],
         data["category"],
         data.get("note"),
-        date
+        date,
+        data["payment_method"]
+
     )
 
     return jsonify({
@@ -91,7 +93,9 @@ def update_expense(id):
         data["amount"],
         data["category"],
         data.get("note"),
-        date
+        date,
+        data["payment_method"]
+
     )
 
     updated_expense = get_expense_by_id(id)

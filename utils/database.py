@@ -16,24 +16,26 @@ def init_db():
             amount REAL NOT NULL,
             category TEXT NOT NULL,
             note TEXT,
-            date TEXT NOT NULL
+            date TEXT NOT NULL,
+            payment_method TEXT NOT NULL
         )
     """)
-
+    
     connection.commit()
     connection.close()
 
-def create_expense(amount, category, note, date):
+def create_expense(amount, category, note, date,payment_method):
     connection = get_db_connection()
 
     cursor = connection.execute("""
-        INSERT INTO expenses (amount, category, note, date)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO expenses (amount, category, note, date,payment_method)
+        VALUES (?, ?, ?, ?,?)
     """, (
         amount,
         category,
         note,
-        date
+        date,
+        payment_method
     ))
     expense_id = cursor.lastrowid
     connection.commit()
@@ -44,7 +46,8 @@ def create_expense(amount, category, note, date):
         "amount": amount,
         "category": category,
         "note": note,
-        "date": date
+        "date": date,
+        "payment_method" : payment_method
     }
 
 def get_expenses(category=None):
@@ -80,18 +83,19 @@ def get_expense_by_id(expense_id):
 
     return None
 
-def update_expense_in_db(expense_id, amount, category, note, date):
+def update_expense_in_db(expense_id, amount, category, note, date,payment_method):
     connection = get_db_connection()
 
     connection.execute("""
         UPDATE expenses
-        SET amount = ?, category = ?, note = ?, date = ?
+        SET amount = ?, category = ?, note = ?, date = ?, payment_method = ?
         WHERE id = ?
     """, (
         amount,
         category,
         note,
         date,
+        payment_method,
         expense_id
     ))
 

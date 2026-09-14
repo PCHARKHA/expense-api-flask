@@ -173,6 +173,33 @@ function createEditCard(expense) {
         categorySelect.appendChild(option);
     });
 
+    // Payment Method
+    const paymentLabel = document.createElement("label");
+    paymentLabel.textContent = "Payment Method";
+
+    const paymentSelect = document.createElement("select");
+
+    const paymentMethods = [
+        "UPI",
+        "Cash",
+        "Card",
+        "Bank Transfer",
+        "Other"
+    ];
+
+    paymentMethods.forEach(function (method) {
+        const option = document.createElement("option");
+
+        option.value = method;
+        option.textContent = method === "Card" ? "Debit/Credit Card" : method;
+
+        if (method === expense.payment_method) {
+            option.selected = true;
+        }
+
+        paymentSelect.appendChild(option);
+    });
+
     // Note
     const noteLabel = document.createElement("label");
     noteLabel.textContent = "Note";
@@ -193,7 +220,8 @@ function createEditCard(expense) {
             expense.id,
             amountInput.value,
             categorySelect.value,
-            noteInput.value
+            noteInput.value,
+            paymentSelect.value
         );
     });
 
@@ -216,6 +244,9 @@ function createEditCard(expense) {
     editCard.appendChild(categoryLabel);
     editCard.appendChild(categorySelect);
 
+    editCard.appendChild(paymentLabel);
+    editCard.appendChild(paymentSelect);
+
     editCard.appendChild(noteLabel);
     editCard.appendChild(noteInput);
 
@@ -226,7 +257,7 @@ function createEditCard(expense) {
 
 }
 
-async function updateExpense(id, amount, category, note) {
+async function updateExpense(id, amount, category, note,payment_method) {
     try {
         const response = await fetch(`/expenses/${id}`, {
             method: "PUT",
@@ -236,7 +267,8 @@ async function updateExpense(id, amount, category, note) {
             body: JSON.stringify({
                 amount: Number(amount),
                 category: category,
-                note: note
+                note: note,
+                payment_method:payment_method
             })
         });
 

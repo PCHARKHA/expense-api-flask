@@ -93,6 +93,17 @@
             placeholder="e.g. Dinner with friends"
           ></textarea>
         </section>
+        
+      <div class="payment">
+        <label for="payment_method">Payment Method</label>
+        <select id="payment_method" name="payment_method" required>
+          <option value="" disabled selected>Select payment method</option>
+          <option value="UPI">UPI</option>
+          <option value="Cash">Cash</option>
+          <option value="Card">Debit/Credit Card</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Other">Other</option>
+        </select>
 
         <div id="form-message" class="form-message"></div>
 

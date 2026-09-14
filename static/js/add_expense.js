@@ -5,6 +5,7 @@ const keypadKeys = document.querySelectorAll(".keypad-key");
 
 const expenseForm = document.getElementById("expense-form");
 const categorySelect = document.getElementById("category-select");
+const paymentMethodSelect = document.getElementById("payment_method");
 const expenseNote = document.getElementById("expense-note");
 const formMessage = document.getElementById("form-message");
 
@@ -55,11 +56,13 @@ expenseForm.addEventListener("submit", function (event) {
     const amount = currentAmount;
     const category = categorySelect.value;
     const note = expenseNote.value;
+    const paymentMethod = paymentMethodSelect.value;
 
     const expenseData = {
         amount: Number(amount),
         category: category,
-        note: note
+        note: note,
+        payment_method: paymentMethod
     };
 
     if (!amount || amount <= 0) {
@@ -70,6 +73,12 @@ expenseForm.addEventListener("submit", function (event) {
 
     if (category === "") {
         formMessage.textContent = "Please select a category.";
+        formMessage.className = "form-message error";
+        return;
+    }
+
+    if (paymentMethod === "") {
+        formMessage.textContent = "Please select a payment method.";
         formMessage.className = "form-message error";
         return;
     }
@@ -104,6 +113,7 @@ function sendToBackend(expenseData){
     
                 categorySelect.value = "";
                 expenseNote.value = "";
+                paymentMethodSelect.value = "";
     
                 numericKeypad.classList.remove("active");
 
