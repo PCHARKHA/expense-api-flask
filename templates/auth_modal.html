@@ -1,0 +1,112 @@
+
+<!-- Shared dark overlay behind whichever modal is open -->
+<div class="auth-overlay" id="authOverlay"></div>
+
+<!-- ---------------- LOGIN MODAL ---------------- -->
+<div class="auth-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+  <div class="auth-modal__box">
+    <button type="button" class="auth-modal__close" id="loginCloseBtn" aria-label="Close login form">&times;</button>
+
+    <h2 class="auth-modal__title" id="loginModalTitle">Login</h2>
+
+    <!-- action/method left as-is for you to wire to Flask later -->
+    <form id="loginForm" class="auth-form" novalidate>
+      <div class="auth-field">
+        <label for="loginEmail">Email</label>
+        <input
+          type="email"
+          id="loginEmail"
+          name="email"
+          autocomplete="email"
+          required
+        >
+        <span class="auth-error" id="loginEmailError"></span>
+      </div>
+
+      <div class="auth-field">
+        <label for="loginPassword">Password</label>
+        <input
+          type="password"
+          id="loginPassword"
+          name="password"
+          autocomplete="current-password"
+          required
+        >
+        <span class="auth-error" id="loginPasswordError"></span>
+      </div>
+
+      <button type="submit" class="auth-btn">Login</button>
+
+      <p class="auth-switch-text">
+        Don't have an account?
+        <button type="button" class="auth-link-btn" id="showRegisterBtn">Register</button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ---------------- REGISTER MODAL ---------------- -->
+<div class="auth-modal" id="registerModal" role="dialog" aria-modal="true" aria-labelledby="registerModalTitle">
+  <div class="auth-modal__box">
+    <button type="button" class="auth-modal__close" id="registerCloseBtn" aria-label="Close register form">&times;</button>
+
+    <h2 class="auth-modal__title" id="registerModalTitle">Register</h2>
+
+    <form id="registerForm" class="auth-form" novalidate>
+      <div class="auth-field">
+        <label for="registerUsername">Username</label>
+        <input
+          type="text"
+          id="registerUsername"
+          name="username"
+          autocomplete="username"
+          required
+        >
+        <span class="auth-error" id="registerUsernameError"></span>
+      </div>
+
+      <div class="auth-field">
+        <label for="registerEmail">Email</label>
+        <input
+          type="email"
+          id="registerEmail"
+          name="email"
+          autocomplete="email"
+          required
+        >
+        <span class="auth-error" id="registerEmailError"></span>
+      </div>
+
+      <div class="auth-field">
+        <label for="registerPassword">Password</label>
+        <input
+          type="password"
+          id="registerPassword"
+          name="password"
+          autocomplete="new-password"
+          required
+        >
+        <span class="auth-error" id="registerPasswordError"></span>
+      </div>
+
+      <div class="auth-field">
+        <label for="registerConfirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="registerConfirmPassword"
+          name="confirm_password"
+          autocomplete="new-password"
+          required
+        >
+        <span class="auth-error" id="registerConfirmPasswordError"></span>
+      </div>
+
+      <button type="submit" class="auth-btn">Register</button>
+
+      <p class="auth-switch-text">
+        Already have an account?
+        <button type="button" class="auth-link-btn" id="showLoginBtn">Login</button>
+      </p>
+    </form>
+  </div>
+</div>

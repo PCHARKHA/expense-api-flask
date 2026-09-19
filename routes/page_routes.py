@@ -19,3 +19,12 @@ def dashboard_page():
 @page_bp.route("/all_expenses")
 def expenses_page():
     return render_template("all_expenses.html")
+
+@page_bp.route("/login")
+def login_page():
+    return render_template("login.html")
+
+
+@page_bp.route("/register")
+def register_page():
+    return render_template("register.html")

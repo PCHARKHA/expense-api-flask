@@ -142,4 +142,21 @@ def delete_expense_in_db(expense_id):
     connection.close()
     return deleted
 
+
+def get_user_by_email(email):
+    connection = get_db_connection()
+
+    cursor = connection.execute("""
+        SELECT * FROM users
+        WHERE email = ?
+    """, (email,))
+
+    row = cursor.fetchone()
+    connection.close()
+
+    if row:
+        return dict(row)
+
+    return None
+
     
