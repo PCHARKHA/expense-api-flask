@@ -24,9 +24,17 @@ def add_expense():
         print("PYDANTIC ERROR:", e)
         print("ERRORS:", e.errors())
 
+        errors = []
+
+        for error in e.errors():
+            error = error.copy()
+            error.pop("ctx", None)
+            error.pop("url", None)
+            errors.append(error)
+
         return jsonify({
             "message": "Validation failed",
-            "errors": e.errors()
+            "errors": errors
         }), 400
 
     date = datetime.now().date().isoformat()
