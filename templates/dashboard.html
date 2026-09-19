@@ -24,7 +24,7 @@
         <p class="app-subtitle">Track and understand your spending</p>
       </div>
 
-      <a href="#" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
+      <a href="{{ url_for('pages.add_expense_page') }}" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
     </header>
 
     <!-- ==========================================================
@@ -94,7 +94,7 @@
 
       </div>
 
-      <a href="{{ url_for('expenses_page') }}" class="view-all-link" id="view-all-link">View All Expenses</a>
+      <a href="{{ url_for('pages.expenses_page') }}" class="view-all-link" id="view-all-link">View All Expenses</a>
     </section>
 
   </main>

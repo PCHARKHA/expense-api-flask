@@ -20,23 +20,48 @@ def init_db():
             payment_method TEXT NOT NULL
         )
     """)
+
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    """)
     
     connection.commit()
     connection.close()
+
+def create_user(username,email,password_hash,created_at):
+    connection = get_db_connection()
+
+    cursor = connection.execute("""
+        INSERT INTO users (username, email, password_hash, created_at)
+        VALUES (?, ?, ?, ?)
+    """, (username, email, password_hash, created_at))
+
+    user_id = cursor.lastrowid
+
+    connection.commit()
+    connection.close()
+
+    return {
+        "id": user_id,
+        "username": username,
+        "email": email,
+        "created_at": created_at
+    }
 
 def create_expense(amount, category, note, date,payment_method):
     connection = get_db_connection()
 
     cursor = connection.execute("""
         INSERT INTO expenses (amount, category, note, date,payment_method)
-        VALUES (?, ?, ?, ?,?)
-    """, (
-        amount,
-        category,
-        note,
-        date,
-        payment_method
-    ))
+        VALUES (?, ?, ?, ?,?) """, (amount,category,note,date,payment_method)
+    )
     expense_id = cursor.lastrowid
     connection.commit()
     connection.close()
