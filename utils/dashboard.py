@@ -1,4 +1,3 @@
-from data.expenses import expenses_data
 from datetime import datetime, timedelta
 
 def calculate_daily_total(expenses):
