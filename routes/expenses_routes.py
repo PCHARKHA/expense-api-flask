@@ -1,4 +1,3 @@
-
 from flask import Blueprint, jsonify, request 
 from datetime import datetime 
 from utils.dashboard import ( calculate_monthly_total, calculate_weekly_total, calculate_daily_total ) 

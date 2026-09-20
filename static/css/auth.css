@@ -1,139 +1,146 @@
-/* ============================================================
-   auth.css
-   Styles for the Login / Register modal system.
-   Kept separate from the main dashboard stylesheet on purpose.
-   Uses the existing app palette:
-     background : #F5F7F4
-     white      : #FFFFFF
-     primary    : #1B4332
-   ============================================================ */
-
-/* ---------- Overlay ---------- */
-.auth-overlay {
+/* ================= OVERLAY ================= */
+.popup-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background-color: rgba(27, 67, 50, 0.35); /* primary green, translucent */
+    background-color: rgba(27, 67, 50, 0.35);
     z-index: 1000;
-  }
-  
-  .auth-overlay.is-visible {
+}
+
+.popup-overlay.visible {
     display: block;
-  }
-  
-  /* ---------- Modal container ---------- */
-  .auth-modal {
+}
+
+
+/* ================= POPUP ================= */
+.auth-popup {
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 1001;
     align-items: center;
     justify-content: center;
-    padding: 16px;
-  }
-  
-  .auth-modal.is-visible {
+    padding: 20px;
+    z-index: 1001;
+}
+
+.auth-popup.visible {
     display: flex;
-  }
-  
-  .auth-modal__box {
-    background-color: #FFFFFF;
+}
+
+
+/* ================= POPUP BOX ================= */
+.auth-popup-box {
     width: 100%;
     max-width: 400px;
-    border-radius: 10px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
     padding: 32px 28px;
     position: relative;
     font-family: 'Manrope', sans-serif;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
-  
-  /* ---------- Close button ---------- */
-  .auth-modal__close {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ================= CLOSE BUTTON ================= */
+.popup-close {
     position: absolute;
+
     top: 14px;
-    right: 14px;
+    right: 16px;
+
     background: none;
     border: none;
-    font-size: 22px;
+
+    font-size: 24px;
     line-height: 1;
+
     color: #1B4332;
+
     cursor: pointer;
+
     padding: 4px;
-    border-radius: 4px;
-  }
-  
-  .auth-modal__close:hover {
+
+    border-radius: 5px;
+}
+
+.popup-close:hover {
     background-color: #F5F7F4;
-  }
-  
-  .auth-modal__close:focus-visible {
-    outline: 2px solid #1B4332;
-    outline-offset: 2px;
-  }
-  
-  /* ---------- Title ---------- */
-  .auth-modal__title {
+}
+
+
+/* ================= TITLE ================= */
+.auth-popup-box h2 {
+    margin: 0 0 24px 0;
     font-family: 'Manrope', sans-serif;
     font-size: 22px;
     font-weight: 700;
     color: #1B4332;
-    margin: 0 0 24px 0;
     text-align: left;
-  }
-  
-  /* ---------- Form layout ---------- */
-  .auth-form {
+}
+
+/* ================= FORM ================= */
+.auth-popup-box form {
     display: flex;
     flex-direction: column;
     gap: 16px;
-  }
-  
-  .auth-field {
+}
+
+/* ================= FORM GROUP ================= */
+.form-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
-  }
-  
-  .auth-field label {
+}
+
+/* ================= LABEL ================= */
+.form-group label {
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: #1B4332;
-  }
-  
-  .auth-field input {
+}
+
+
+/* ================= INPUT ================= */
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
     font-family: 'Manrope', sans-serif;
     font-size: 14px;
-    padding: 10px 12px;
+    padding: 11px 12px;
     border: 1px solid #D7DED9;
     border-radius: 6px;
     background-color: #F5F7F4;
     color: #1B4332;
-  }
-  
-  .auth-field input:focus-visible {
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input::placeholder {
+    color: #8A958E;
+}
+
+.form-group input:focus {
     outline: none;
     border-color: #1B4332;
-    box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.2);
-  }
-  
-  .auth-field input.auth-input--invalid {
-    border-color: #B3261E;
-  }
-  
-  /* ---------- Inline error text ---------- */
-  .auth-error {
+    box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.15);
+}
+
+
+/* ================= ERROR ================= */
+.form-error {
+    min-height: 14px;
     font-family: 'Manrope', sans-serif;
     font-size: 12px;
     color: #B3261E;
-    min-height: 14px;
-  }
-  
-  /* ---------- Submit button ---------- */
-  .auth-btn {
+}
+
+
+/* ================= AUTH BUTTON ================= */
+.auth-button {
+    width: 100%;
     font-family: 'Manrope', sans-serif;
     font-size: 15px;
     font-weight: 700;
+
     color: #FFFFFF;
     background-color: #1B4332;
     border: none;
@@ -141,27 +148,28 @@
     padding: 12px 16px;
     cursor: pointer;
     margin-top: 4px;
-  }
-  
-  .auth-btn:hover {
-    background-color: #163a2a;
-  }
-  
-  .auth-btn:focus-visible {
-    outline: 2px solid #1B4332;
-    outline-offset: 2px;
-  }
-  
-  /* ---------- Switch text (Login <-> Register) ---------- */
-  .auth-switch-text {
+    transition: background-color 0.2s;
+}
+
+.auth-button:hover {
+    background-color: #163A2A;
+}
+
+.auth-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.25);
+}
+
+/* ================= LOGIN / REGISTER SWITCH ================= */
+.auth-switch {
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
     color: #1B4332;
     text-align: center;
-    margin: 4px 0 0 0;
-  }
-  
-  .auth-link-btn {
+    margin: 18px 0 0 0;
+}
+
+.switch-button {
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
     font-weight: 700;
@@ -171,20 +179,20 @@
     padding: 0;
     text-decoration: underline;
     cursor: pointer;
-  }
-  
-  .auth-link-btn:focus-visible {
-    outline: 2px solid #1B4332;
-    outline-offset: 2px;
-  }
-  
-  /* ---------- Responsive ---------- */
-  @media (max-width: 480px) {
-    .auth-modal__box {
-      padding: 24px 20px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 480px) {
+    .auth-popup {
+        padding: 16px;
     }
-  
-    .auth-modal__title {
-      font-size: 20px;
+
+    .auth-popup-box {
+        padding: 26px 20px;
     }
-  }
+
+    .auth-popup-box h2 {
+        font-size: 20px;
+    }
+}
+

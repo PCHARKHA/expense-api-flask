@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet"  href="{{ url_for('static', filename='css/auth.css') }}">
 </head>
 <body>
 
@@ -18,6 +19,7 @@
        ========================================================== -->
   <header class="site-header">
     <p class="brand-name">Personal Finance Manager</p>
+    <button type="button" class="login-button" id="loginBtn" > Login </button>
   </header>
 
   <!-- ==========================================================
@@ -30,6 +32,8 @@
       where your money goes, so you can make better decisions with your budget.
     </p>
 
+    {% include 'auth_modal.html' %}
+
     <div class="hero-actions">
       <a href="{{ url_for('pages.add_expense_page') }}" id="cta-add-expense" class="btn btn-primary">Add Expense</a>
       <a href="{{ url_for('pages.dashboard_page') }}" id="cta-view-dashboard" class="btn btn-secondary">View Dashboard</a>
@@ -37,6 +41,7 @@
 
     <a href="{{ url_for('pages.expenses_page') }}" class="view-expenses-link">View All Expenses</a>
   </main>
-
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
+
 </html>
