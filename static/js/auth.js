@@ -70,7 +70,9 @@ loginForm.addEventListener("submit", async function (event) {
         if (response.ok) {
             closeAuth();
         } else {
-            // Show backend authentication error
+            document.getElementById("loginEmail").value = "";
+            document.getElementById("loginPassword").value = "";
+
             document.getElementById("loginPasswordError").textContent = data.message;
         }
 
@@ -81,32 +83,27 @@ loginForm.addEventListener("submit", async function (event) {
 });
 
 
-// Clearing fields when the user starts re-entering
-document.getElementById("loginEmail").addEventListener("input", function () {
-    document.getElementById("loginEmailError").textContent = "";
-});
-
-document.getElementById("loginPassword").addEventListener("input", function () {
-    document.getElementById("loginPasswordError").textContent = "";
-});
-
 const registerForm = document.getElementById("registerForm");
 registerForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+
     const username = document.getElementById("registerUsername").value;
     const email = document.getElementById("registerEmail").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("registerConfirmPassword").value;
 
+    // Clear previous errors
+    document.getElementById("registerUsernameError").textContent = "";
+    document.getElementById("registerEmailError").textContent = "";
+    document.getElementById("registerPasswordError").textContent = "";
+    document.getElementById("registerConfirmPasswordError").textContent = "";
+
     // Check whether passwords match
     if (password !== confirmPassword) {
-        document.getElementById("registerConfirmPasswordError").textContent =
-            "Passwords do not match.";
+        document.getElementById("registerConfirmPasswordError").textContent ="Passwords do not match.";
         return;
     }
 
-    // Clear previous error
-    document.getElementById("registerConfirmPasswordError").textContent = "";
     try {
         const response = await fetch("/register", {
             method: "POST",
@@ -121,23 +118,21 @@ registerForm.addEventListener("submit", async function (event) {
             })
         });
 
-
         const data = await response.json();
-        if (response.ok) {
-            console.log("Registration successful");
-            console.log(data);
 
-            // After successful registration, switch the user to Login
+        if (response.ok) {
             openLogin();
         } else {
-            console.log("Registration failed");
-            console.log(data.message);
+            document.getElementById("registerUsername").value = "";
+            document.getElementById("registerEmail").value = "";
+            document.getElementById("registerPassword").value = "";
+            document.getElementById("registerConfirmPassword").value = "";
+
+            document.getElementById("registerEmailError").textContent = data.message;
         }
 
     } catch (error) {
-        console.error("Error while registering:", error);
+        document.getElementById("registerEmailError").textContent =
+            "Something went wrong. Please try again.";
     }
 });
-
-
-
