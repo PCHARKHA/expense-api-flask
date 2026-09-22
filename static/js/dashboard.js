@@ -1,7 +1,13 @@
 import { formatExpenseDate } from "./utils.js";
 async function loadDashboard() {
     try {
-        const response = await fetch("/expenses");
+        const token = localStorage.getItem("access_token");
+
+        const response = await fetch("/expenses",{
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         const expenses = await response.json();
     
         calculateSummary(expenses);

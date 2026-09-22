@@ -1,9 +1,22 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime
+
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import create_access_token,jwt_required,get_jwt_identity
+
 from utils.database import create_user, get_user_by_email
 
 auth_bp = Blueprint("auth", __name__)
+
+@auth_bp.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    user_id = get_jwt_identity()
+
+    return jsonify({
+        "message": "You have access to this protected route",
+        "user_id": user_id
+    }), 200
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
@@ -64,14 +77,17 @@ def login():
         }), 401
 
     password_valid = check_password_hash(user["password_hash"],password)
-
+    
     if not password_valid:
         return jsonify({
             "message": "Invalid email or password"
         }), 401
-
+    
+    access_token = create_access_token(identity=str(user["id"]))
+    
     return jsonify({
         "message": "Login successful",
+         "access_token": access_token,
         "user": {
             "id": user["id"],
             "username": user["username"],

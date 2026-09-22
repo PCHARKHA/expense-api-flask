@@ -4,10 +4,12 @@ from utils.dashboard import ( calculate_monthly_total, calculate_weekly_total, c
 from utils.database import (create_expense,get_expenses, get_expense_by_id,update_expense_in_db,delete_expense_in_db) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 expense_bp = Blueprint("expenses",__name__)
 
 @expense_bp.route("/expenses", methods=["POST"])
+@jwt_required()
 def add_expense():
     data = request.get_json()
 
@@ -36,9 +38,11 @@ def add_expense():
             "errors": errors
         }), 400
 
+    user_id = int(get_jwt_identity())
     date = datetime.now().date().isoformat()
-
+    
     expense = create_expense(
+        user_id,
         expense_data.amount,
         expense_data.category,
         expense_data.note,
@@ -53,16 +57,22 @@ def add_expense():
 
 # READ - Get all expenses 
 @expense_bp.route("/expenses", methods=["GET"]) 
+@jwt_required()
 def get_all_expenses(): 
+    user_id = int(get_jwt_identity())
+
     category = request.args.get("category") 
-    expenses = get_expenses(category) 
+    expenses = get_expenses(user_id,category) 
     return jsonify(expenses), 200 
 
 
 # READ - Get one expense 
 @expense_bp.route("/expenses/<int:id>", methods=["GET"]) 
+@jwt_required()
 def get_expense(id): 
-    expense_row = get_expense_by_id(id) 
+    user_id = int(get_jwt_identity())
+    expense_row = get_expense_by_id(id,user_id) 
+
     if expense_row: 
         return jsonify(expense_row) 
     return jsonify({ "message": "Expense not found" }),404
@@ -70,6 +80,7 @@ def get_expense(id):
 
 # UPDATE - Update an expense
 @expense_bp.route("/expenses/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_expense(id):
     data = request.get_json()
 
@@ -102,7 +113,8 @@ def update_expense(id):
         }), 400
 
     # Check whether expense exists
-    expense = get_expense_by_id(id)
+    user_id = int(get_jwt_identity())
+    expense = get_expense_by_id(id,user_id)
 
     if expense is None:
         return jsonify({
@@ -114,6 +126,7 @@ def update_expense(id):
     # Update database using validated Pydantic data
     update_expense_in_db(
         id,
+        user_id,
         expense_data.amount,
         expense_data.category,
         expense_data.note,
@@ -122,7 +135,7 @@ def update_expense(id):
     )
 
     # Get updated record
-    updated_expense = get_expense_by_id(id)
+    updated_expense = get_expense_by_id(id,user_id)
 
     return jsonify({
         "message": "Expense updated successfully",
@@ -131,9 +144,11 @@ def update_expense(id):
 
 # DELETE - Delete an expense
 @expense_bp.route("/expenses/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_expense(id):
     # Check whether expense exists
-    expense = get_expense_by_id(id)
+    user_id = int(get_jwt_identity())
+    expense = get_expense_by_id(id,user_id)
 
     if expense is None:
         return jsonify({
@@ -141,7 +156,7 @@ def delete_expense(id):
         }), 404
 
     # Delete expense
-    delete_expense_in_db(id)
+    delete_expense_in_db(id,user_id)
 
     return jsonify({
         "message": "Expense deleted successfully"

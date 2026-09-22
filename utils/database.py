@@ -11,18 +11,6 @@ def init_db():
     connection = get_db_connection()
 
     connection.execute("""
-        CREATE TABLE IF NOT EXISTS expenses (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            amount REAL NOT NULL,
-            category TEXT NOT NULL,
-            note TEXT,
-            date TEXT NOT NULL,
-            payment_method TEXT NOT NULL
-        )
-    """)
-
-
-    connection.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
@@ -31,7 +19,20 @@ def init_db():
             created_at TEXT NOT NULL
         )
     """)
-    
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS expenses (
+        expense_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        amount REAL NOT NULL,
+        category TEXT NOT NULL,
+        note TEXT,
+        date TEXT NOT NULL,
+        payment_method TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+    """)
+
     connection.commit()
     connection.close()
 
@@ -55,19 +56,20 @@ def create_user(username,email,password_hash,created_at):
         "created_at": created_at
     }
 
-def create_expense(amount, category, note, date,payment_method):
+def create_expense(user_id,amount, category, note, date,payment_method):
     connection = get_db_connection()
 
     cursor = connection.execute("""
-        INSERT INTO expenses (amount, category, note, date,payment_method)
-        VALUES (?, ?, ?, ?,?) """, (amount,category,note,date,payment_method)
+        INSERT INTO expenses (user_id,amount, category, note, date,payment_method)
+        VALUES (?, ?, ?, ?,?,?) """, (user_id,amount,category,note,date,payment_method)
     )
     expense_id = cursor.lastrowid
     connection.commit()
     connection.close()
 
     return {
-        "id": expense_id,
+        "expense_id": expense_id,
+        "user_id": user_id,
         "amount": amount,
         "category": category,
         "note": note,
@@ -75,30 +77,31 @@ def create_expense(amount, category, note, date,payment_method):
         "payment_method" : payment_method
     }
 
-def get_expenses(category=None):
+def get_expenses(user_id,category=None):
     connection = get_db_connection()
 
     if category:
         cursor = connection.execute("""
             SELECT * FROM expenses
-            WHERE category = ?
-        """, (category,))
+            WHERE user_id = ? AND category = ?
+        """, (user_id,category,))
     else:
         cursor = connection.execute("""
             SELECT * FROM expenses
-        """)
+            WHERE user_id = ?
+        """,(user_id,))
 
     expenses = [dict(row) for row in cursor]
     connection.close()
     return expenses
 
-def get_expense_by_id(expense_id):
+def get_expense_by_id(expense_id,user_id):
     connection = get_db_connection()
 
     cursor = connection.execute("""
         SELECT * FROM expenses
-        WHERE id = ?
-    """, (expense_id,))
+        WHERE expense_id = ? AND user_id = ?
+    """, (expense_id,user_id))
 
     row = cursor.fetchone()
     connection.close()
@@ -108,32 +111,25 @@ def get_expense_by_id(expense_id):
 
     return None
 
-def update_expense_in_db(expense_id, amount, category, note, date,payment_method):
+def update_expense_in_db(expense_id,user_id, amount, category, note, date,payment_method):
     connection = get_db_connection()
 
     connection.execute("""
         UPDATE expenses
         SET amount = ?, category = ?, note = ?, date = ?, payment_method = ?
-        WHERE id = ?
-    """, (
-        amount,
-        category,
-        note,
-        date,
-        payment_method,
-        expense_id
-    ))
+        WHERE expense_id = ? AND user_id = ?
+    """, ( amount,category,note,date,payment_method,expense_id,user_id))
 
     connection.commit()
     connection.close()
 
-def delete_expense_in_db(expense_id):
+def delete_expense_in_db(expense_id,user_id):
     connection = get_db_connection()
 
     cursor = connection.execute("""
         DELETE FROM expenses
-        WHERE id = ?
-    """, (expense_id,))
+        WHERE expense_id = ? AND user_id = ?
+    """, (expense_id,user_id))
 
     connection.commit()
 

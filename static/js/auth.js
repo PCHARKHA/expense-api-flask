@@ -68,6 +68,7 @@ loginForm.addEventListener("submit", async function (event) {
 
         const data = await response.json();
         if (response.ok) {
+            localStorage.setItem("access_token", data.access_token);
             closeAuth();
         } else {
             document.getElementById("loginEmail").value = "";
