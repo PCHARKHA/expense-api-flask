@@ -1,4 +1,4 @@
-import { formatExpenseDate } from "./utils.js";
+import { formatExpenseDate,handleUnauthorized } from "./utils.js";
 let allExpenses = [];
 
 async function loadAllExpenses() {
@@ -10,6 +10,11 @@ async function loadAllExpenses() {
             }
         });
         const data = await response.json();
+
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
 
         if (!response.ok) {
             console.error("Failed to load expenses:", data);
@@ -125,6 +130,10 @@ async function deleteExpense(id) {
         });
 
         const data = await response.json();
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
         if (!response.ok) {
             showActionMessage(data.message, "error");
             return;
@@ -290,6 +299,10 @@ async function updateExpense(id, amount, category, note,payment_method) {
         });
 
         const data = await response.json();
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
         
         const actionMessage = document.getElementById("action-message");
         actionMessage.textContent = data.message;

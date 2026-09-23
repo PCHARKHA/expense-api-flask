@@ -18,3 +18,12 @@ export function formatExpenseDate(expenseDate) {
 
     return `${differenceInDays} days ago`;
 }
+
+export function getAuthToken() {
+    return localStorage.getItem("access_token");
+}
+
+export function handleUnauthorized() {
+    localStorage.removeItem("access_token");
+    window.location.href = "/";
+}

@@ -1,3 +1,4 @@
+import { handleUnauthorized } from "./utils.js";
 const amountDisplay = document.getElementById("amount-display");
 const amountValue = document.getElementById("amount-value");
 const numericKeypad = document.getElementById("numeric-keypad");
@@ -100,11 +101,16 @@ function sendToBackend(expenseData){
             return response.json().then(function (data) {
                 return {
                     ok: response.ok,
+                    status: response.status,
                     data: data
                 };
             });
         })
         .then(function (result) {
+            if (result.status === 401) {
+                handleUnauthorized();
+                return;
+            }
     
             if (result.ok) {
                 formMessage.textContent = result.data.message;

@@ -1,4 +1,4 @@
-import { formatExpenseDate } from "./utils.js";
+import { formatExpenseDate,handleUnauthorized } from "./utils.js";
 async function loadDashboard() {
     try {
         const token = localStorage.getItem("access_token");
@@ -8,6 +8,11 @@ async function loadDashboard() {
                 "Authorization": `Bearer ${token}`
             }
         });
+
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
         const expenses = await response.json();
     
         calculateSummary(expenses);
