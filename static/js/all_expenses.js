@@ -3,10 +3,20 @@ let allExpenses = [];
 
 async function loadAllExpenses() {
     try {
-        const response = await fetch("/expenses");
-        const expenses = await response.json();
+        const token = localStorage.getItem("access_token");
+        const response = await fetch("/expenses",{
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
 
-        allExpenses = expenses;
+        if (!response.ok) {
+            console.error("Failed to load expenses:", data);
+            return;
+        }
+        //else
+        allExpenses = data;
         displayExpenses(allExpenses);
 
     } catch (error) {
@@ -27,6 +37,7 @@ function displayExpenses(expenses) {
     }
    
     expenses.forEach(function (expense) {
+        console.log(expense);
         const expenseItem = document.createElement("div");
         expenseItem.classList.add("expense-item");
 
@@ -70,7 +81,7 @@ function displayExpenses(expenses) {
         deleteButton.textContent = "Delete";
 
         deleteButton.addEventListener("click", function () {
-            deleteExpense(expense.id);
+            deleteExpense(expense.expense_id);
         });
 
         actionsElement.appendChild(editButton);
@@ -105,8 +116,12 @@ categoryFilter.addEventListener("change", function () {
 
 async function deleteExpense(id) {
     try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(`/expenses/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });
 
         const data = await response.json();
@@ -217,7 +232,7 @@ function createEditCard(expense) {
     updateButton.classList.add("update-expense-btn");
     updateButton.addEventListener("click", function () {
         updateExpense(
-            expense.id,
+            expense.expense_id,
             amountInput.value,
             categorySelect.value,
             noteInput.value,
@@ -259,10 +274,12 @@ function createEditCard(expense) {
 
 async function updateExpense(id, amount, category, note,payment_method) {
     try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(`/expenses/${id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 amount: Number(amount),

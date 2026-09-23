@@ -87,10 +87,12 @@ expenseForm.addEventListener("submit", function (event) {
 });
 
 function sendToBackend(expenseData){
+    const token = localStorage.getItem("access_token");
     fetch("/expenses", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(expenseData)
     })
