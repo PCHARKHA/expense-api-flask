@@ -2,7 +2,6 @@ import { formatExpenseDate,handleUnauthorized } from "./utils.js";
 async function loadDashboard() {
     try {
         const token = localStorage.getItem("access_token");
-
         const response = await fetch("/expenses",{
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -21,7 +20,6 @@ async function loadDashboard() {
         }catch (error) {
             console.error("Error loading dashboard:", error);
         }
-    
     }
 
 function calculateSummary(expenses){
@@ -72,13 +70,11 @@ function calculateSummary(expenses){
 }
 //Working on add expense button
 const addExpenseButton = document.getElementById("add-expense-btn");
-
 addExpenseButton.addEventListener("click", function (event) {
     event.preventDefault();
     window.location.href = "/add-expense";
 
 });
-
 
 function displayRecentExpenses(expenses){
     const expenseList = document.getElementById("expense-list");
@@ -102,7 +98,6 @@ function displayRecentExpenses(expenses){
         const noteElement = document.createElement("span");
         noteElement.classList.add("expense-note");
         noteElement.textContent = expense.note;
-
 
         // Amount
         const amountElement = document.createElement("span");

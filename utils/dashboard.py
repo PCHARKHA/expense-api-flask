@@ -37,3 +37,9 @@ def calculate_monthly_total(expenses):
             monthly_total += expense["amount"]
 
     return monthly_total
+
+def calculate_daily_average(monthly_total):
+    today = datetime.now().date()
+    days_elapsed = today.day
+
+    return round(monthly_total / days_elapsed, 2)

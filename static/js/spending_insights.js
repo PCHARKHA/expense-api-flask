@@ -31,4 +31,32 @@ async function loadHighestSpendingCategory() {
     }
 }
 
+async function loadDailyAverage() {
+    try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch("/expenses/insights/daily-average", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
+
+        const data = await response.json();
+        if (!response.ok) {
+            console.error("Backend error:", data);
+            return;
+        }
+
+        document.getElementById("daily-average").textContent =`₹ ${data.daily_average} / day`;
+
+    } catch (error) {
+        console.error("Error loading daily average:", error);
+    }
+}
+
 loadHighestSpendingCategory();
+loadDailyAverage();

@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request 
 from datetime import datetime 
-from utils.dashboard import ( calculate_monthly_total, calculate_weekly_total, calculate_daily_total ) 
+from utils.dashboard import ( calculate_monthly_total,calculate_daily_average ) 
 from utils.database import (create_expense,get_expenses, get_expense_by_id,
-                            update_expense_in_db,delete_expense_in_db,get_highest_spending_category) 
+                            update_expense_in_db,delete_expense_in_db,
+                            get_highest_spending_category) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -185,3 +186,16 @@ def highest_spending_category():
     insight["percentage"] = round(percentage, 2)
 
     return jsonify(insight), 200
+
+@expense_bp.route("/expenses/insights/daily-average", methods=["GET"])
+@jwt_required()
+def daily_average_spending():
+    user_id = int(get_jwt_identity())
+    expenses = get_expenses(user_id)
+
+    monthly_total = calculate_monthly_total(expenses)
+    daily_average = calculate_daily_average(monthly_total)
+
+    return jsonify({
+        "daily_average": daily_average
+    }), 200
