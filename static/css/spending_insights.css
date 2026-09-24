@@ -1,0 +1,214 @@
+/* ==========================================================================
+   Personal Spending Insights — styles
+   Matches the existing dashboard's palette and font (Manrope).
+   ========================================================================== */
+
+/* ---- Design tokens ---- */
+:root {
+    --color-bg: #F5F7F4;
+    --color-card: #FFFFFF;
+    --color-primary: #1B4332;
+    --color-primary-soft: #EAF1EC;
+    --color-text: #1F2A24;
+    --color-text-muted: #6B7A72;
+    --color-border: #E4E9E3;
+  
+    /* One subtle accent color per insight type — kept muted so the page
+       still reads as calm and professional, not colorful. */
+    --accent-blue: #4C6B8A;
+    --accent-blue-soft: #EAF0F5;
+    --accent-amber: #B08328;
+    --accent-amber-soft: #F6EFE2;
+    --accent-rose: #A85D52;
+    --accent-rose-soft: #F5EAE7;
+  
+    --radius-card: 16px;
+    --shadow-card: 0 1px 2px rgba(27, 67, 50, 0.04), 0 4px 14px rgba(27, 67, 50, 0.06);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Manrope', sans-serif;
+  }
+  
+  /* ---- Page wrapper ---- */
+  .insights-page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  
+  /* ---- Header ---- */
+  .insights-header {
+    margin-bottom: 40px;
+  }
+  
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.15s ease;
+  }
+  
+  .back-button:hover {
+    color: var(--color-primary);
+  }
+  
+  .back-arrow {
+    font-size: 16px;
+  }
+  
+  .page-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin: 0 0 8px;
+  }
+  
+  .page-subtitle {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 480px;
+  }
+  
+  /* ---- Shared card look ---- */
+  .insight-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
+  }
+  
+  .insight-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 10px;
+  }
+  
+  .insight-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+  }
+  
+  .insight-description {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin: 8px 0 0;
+  }
+  
+  /* ---- Featured card: Highest Spending Category ---- */
+  .featured-card {
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, var(--color-primary-soft) 0%, var(--color-card) 55%);
+    border-color: #D9E5DC;
+  }
+  
+  .featured-value {
+    font-size: 26px;
+    color: var(--color-primary);
+    margin-top: 2px;
+  }
+  
+  .featured-amount {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin: 6px 0 0;
+    letter-spacing: -0.01em;
+  }
+  
+  /* ---- Grid of secondary cards ---- */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  
+  @media (max-width: 800px) {
+    .insights-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Each card type gets a thin top accent bar in its own color,
+     so the three cards feel related but not identical. */
+  .accent-blue {
+    border-top: 3px solid var(--accent-blue);
+  }
+  
+  .accent-amber {
+    border-top: 3px solid var(--accent-amber);
+  }
+  
+  .accent-rose {
+    border-top: 3px solid var(--accent-rose);
+  }
+  
+  #daily-average {
+    font-size: 24px;
+    color: var(--accent-blue);
+  }
+  
+  #largest-expense-amount {
+    font-size: 24px;
+    color: var(--accent-amber);
+  }
+  
+  #monthly-comparison {
+    font-size: 20px;
+    color: var(--accent-rose);
+  }
+  
+  /* Small breakdown row under the monthly comparison figure */
+  .comparison-breakdown {
+    display: flex;
+    gap: 16px;
+    margin-top: 14px;
+  }
+  
+  .comparison-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .comparison-tag {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+  
+  .comparison-figure {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  
+  /* ---- Spending Pattern: wide card ---- */
+  .pattern-card {
+    background-color: var(--accent-blue-soft);
+    border-color: #DCE6EE;
+  }
+  
+  .pattern-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary);
+    line-height: 1.5;
+  }

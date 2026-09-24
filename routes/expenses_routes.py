@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request 
 from datetime import datetime 
 from utils.dashboard import ( calculate_monthly_total, calculate_weekly_total, calculate_daily_total ) 
-from utils.database import (create_expense,get_expenses, get_expense_by_id,update_expense_in_db,delete_expense_in_db) 
+from utils.database import (create_expense,get_expenses, get_expense_by_id,
+                            update_expense_in_db,delete_expense_in_db,get_highest_spending_category) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -161,3 +162,26 @@ def delete_expense(id):
     return jsonify({
         "message": "Expense deleted successfully"
     }), 200
+
+
+#Dashboard related routes
+@expense_bp.route("/expenses/insights/highest-category", methods=["GET"])
+@jwt_required()
+def highest_spending_category():
+    user_id = int(get_jwt_identity())
+
+    insight = get_highest_spending_category(user_id)
+
+    if insight is None:
+        return jsonify({
+            "message": "No expenses found for this month"
+        }), 404
+
+    # percentage logic
+    expenses = get_expenses(user_id)
+    monthly_total = calculate_monthly_total(expenses)
+
+    percentage = (insight["amount"] / monthly_total) * 100
+    insight["percentage"] = round(percentage, 2)
+
+    return jsonify(insight), 200

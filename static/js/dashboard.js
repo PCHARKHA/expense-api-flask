@@ -98,7 +98,6 @@ function displayRecentExpenses(expenses){
 
         categoryElement.textContent = expense.category;
 
-
         // Note
         const noteElement = document.createElement("span");
         noteElement.classList.add("expense-note");
@@ -109,7 +108,6 @@ function displayRecentExpenses(expenses){
         const amountElement = document.createElement("span");
         amountElement.classList.add("expense-amount");
         amountElement.textContent = `₹ ${expense.amount}`;
-
 
         // Date
         const dateElement = document.createElement("span");

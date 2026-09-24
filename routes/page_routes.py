@@ -28,3 +28,7 @@ def login_page():
 @page_bp.route("/register")
 def register_page():
     return render_template("register.html")
+
+@page_bp.route("/spending-insights")
+def spending_insights_page():
+    return render_template("spending_insights.html")

@@ -155,4 +155,29 @@ def get_user_by_email(email):
 
     return None
 
+
+#DASHBOARD FUNCTIONS
+def get_highest_spending_category(user_id):
+    connection = get_db_connection()
+
+    cursor = connection.execute("""
+        SELECT category, SUM(amount) AS total
+        FROM expenses
+        WHERE user_id = ?
+          AND strftime('%Y-%m', date) = strftime('%Y-%m', 'now')
+        GROUP BY category
+        ORDER BY total DESC
+        LIMIT 1
+    """, (user_id,))
+
+    row = cursor.fetchone()
+    connection.close()
+
+    if row:
+        return {
+            "category": row["category"],
+            "amount": row["total"]
+        }
+
+    return None
     
