@@ -12,7 +12,7 @@ from flask_jwt_extended import JWTManager
 app = Flask(__name__)
 
 app.config["JWT_SECRET_KEY"] = "your-random-secret-key"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = 1)
 
 jwt = JWTManager(app)
 

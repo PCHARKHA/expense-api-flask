@@ -1,4 +1,4 @@
-import { handleUnauthorized } from "./utils.js";
+import {handleUnauthorized } from "./utils.js";
 const amountDisplay = document.getElementById("amount-display");
 const amountValue = document.getElementById("amount-value");
 const numericKeypad = document.getElementById("numeric-keypad");
@@ -58,11 +58,13 @@ expenseForm.addEventListener("submit", function (event) {
     const category = categorySelect.value;
     const note = expenseNote.value;
     const paymentMethod = paymentMethodSelect.value;
+    const today = new Date().toISOString().split("T")[0];
 
     const expenseData = {
         amount: Number(amount),
         category: category,
-        note: note,
+        note: note.trim() === "" ? null : note.trim(),
+        date : today,
         payment_method: paymentMethod
     };
 
@@ -131,6 +133,8 @@ function sendToBackend(expenseData){
                 }, 3000);
             } else {
                 formMessage.textContent = result.data.message;
+                console.log("Backend response:", result.data);
+                console.log("Validation errors:", result.data.errors);
                 formMessage.className = "form-message error";
             }
     
