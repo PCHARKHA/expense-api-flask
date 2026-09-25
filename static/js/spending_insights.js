@@ -153,7 +153,68 @@ async function loadWeekendPattern() {
         console.error("Error loading weekend spending pattern:", error);
     }
 }
+
+async function loadSmallExpenses() {
+    try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(
+            "/expenses/insights/small-expenses",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
+
+        const data = await response.json();
+        if (!response.ok) {
+            console.error("Backend error:", data);
+            return;
+        }
+
+        document.getElementById("small-expense-count").textContent = `${data.count} small expenses`;
+        document.getElementById("small-expense-total").textContent = `₹ ${data.total}`;
+    } catch (error) {
+        console.error("Error loading small expenses:", error);
+    }
+}
+
+async function loadNoSpendDays() {
+    try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(
+            "/expenses/insights/no-spend-days",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        if (response.status === 401) {
+            handleUnauthorized();
+            return;
+        }
+
+        const data = await response.json();
+        if (!response.ok) {
+            console.error("Backend error:", data);
+            return;
+        }
+        document.getElementById("no-spend-days").textContent =  `${data.no_spend_days} days`;
+    } catch (error) {
+        console.error("Error loading no-spend days:", error);
+    }
+}
+
 loadHighestSpendingCategory();
 loadDailyAverage();
 loadMonthlyComparison();
 loadWeekendPattern();
+loadSmallExpenses();
+loadNoSpendDays();

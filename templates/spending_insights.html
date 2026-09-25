@@ -57,6 +57,11 @@
             </div>
           </div>
         </section>
+        <section class="insight-card accent-green" id="no-spend-days-card">
+          <p class="insight-label">No-Spend Days</p>
+          <p class="insight-value" id="no-spend-days">0 days</p>
+          <p class="insight-description"> Days this month with no recorded expenses</p>
+      </section>
 
       </div>
 
@@ -79,7 +84,14 @@
         </div>
       </section>
 
-    </main>
+      <section class="insight-card accent-blue" id="small-expenses-card">
+        <p class="insight-label">Small Expenses Add Up</p>
+        <p class="insight-value" id="small-expense-count"> 0 small expenses </p>
+        <p class="insight-description"> Total:
+            <span id="small-expense-total">₹ 0</span>
+        this month</p>
+    </section>
+  </main>
 
   </div>
   <script type="module" src="{{ url_for('static', filename='js/spending_insights.js') }}"></script>

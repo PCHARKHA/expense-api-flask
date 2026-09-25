@@ -3,7 +3,8 @@ from datetime import datetime,timedelta
 from utils.dashboard import ( calculate_monthly_total,calculate_daily_average ) 
 from utils.database import (create_expense,get_expenses, get_expense_by_id,
                             update_expense_in_db,delete_expense_in_db,
-                            get_highest_spending_category,get_monthly_spending_comparison,get_current_month_expenses) 
+                            get_highest_spending_category,get_monthly_spending_comparison,
+                            get_current_month_expenses,get_small_expenses,get_spending_days) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -326,4 +327,69 @@ def weekend_spending():
         "weekday_percentage": round(weekday_percentage, 2),
         "weekend_percentage": round(weekend_percentage, 2),
         "pattern": pattern
+    }), 200
+
+@expense_bp.route("/expenses/insights/small-expenses", methods=["GET"])
+@jwt_required()
+def small_expenses():
+    user_id = int(get_jwt_identity())
+
+    today = datetime.now().date()
+    current_month_start = today.replace(day=1)
+
+    if current_month_start.month == 12:
+        next_month_start = current_month_start.replace(
+            year=current_month_start.year + 1,
+            month=1
+        )
+    else:
+        next_month_start = current_month_start.replace(
+            month=current_month_start.month + 1
+        )
+
+    data = get_small_expenses(
+        user_id,
+        current_month_start.isoformat(),
+        next_month_start.isoformat()
+    )
+
+    return jsonify({
+        "month": current_month_start.strftime("%B %Y"),
+        "threshold": 200,
+        "count": data["count"],
+        "total": round(data["total"], 2)
+    }), 200
+
+@expense_bp.route("/expenses/insights/no-spend-days", methods=["GET"])
+@jwt_required()
+def no_spend_days():
+    user_id = int(get_jwt_identity())
+
+    today = datetime.now().date()
+    current_month_start = today.replace(day=1)
+
+    if current_month_start.month == 12:
+        next_month_start = current_month_start.replace(
+            year=current_month_start.year + 1,
+            month=1
+        )
+    else:
+        next_month_start = current_month_start.replace(
+            month=current_month_start.month + 1
+        )
+
+    spending_days = get_spending_days(
+        user_id,
+        current_month_start.isoformat(),
+        next_month_start.isoformat()
+    )
+
+    days_elapsed = today.day
+    no_spend_days = days_elapsed - spending_days
+
+    return jsonify({
+        "month": current_month_start.strftime("%B %Y"),
+        "days_elapsed": days_elapsed,
+        "spending_days": spending_days,
+        "no_spend_days": no_spend_days
     }), 200

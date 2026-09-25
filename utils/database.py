@@ -230,4 +230,37 @@ def get_current_month_expenses(user_id, current_month_start, next_month_start):
     return expenses
 
 
-    
+def get_small_expenses(user_id, current_month_start, next_month_start):
+    connection = get_db_connection()
+
+    cursor = connection.execute("""
+        SELECT COUNT(*) AS count, COALESCE(SUM(amount), 0) AS total
+        FROM expenses
+        WHERE user_id = ?
+        AND date >= ?
+        AND date < ?
+        AND amount < 200
+    """, (user_id, current_month_start, next_month_start))
+
+    row = cursor.fetchone()
+
+    connection.close()
+
+    return {
+        "count": row["count"],
+        "total": row["total"]
+    }
+
+def get_spending_days(user_id, current_month_start, next_month_start):
+    connection = get_db_connection()
+    cursor = connection.execute("""
+        SELECT COUNT(DISTINCT date) AS spending_days
+        FROM expenses
+        WHERE user_id = ?
+        AND date >= ?
+        AND date < ?
+    """, (user_id, current_month_start, next_month_start))
+
+    row = cursor.fetchone()
+    connection.close()
+    return row["spending_days"]
