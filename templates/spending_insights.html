@@ -42,16 +42,6 @@
           <p class="insight-description">Based on this month's transactions so far</p>
         </section>
 
-        <!-- Largest Single Expense -->
-        <section class="insight-card accent-amber" id="largest-expense-card">
-          <p class="insight-label">Largest Single Expense</p>
-          <p class="insight-value" id="largest-expense-amount">₹0</p>
-          <p class="insight-description">
-            <span id="largest-expense-category">Category</span> &middot;
-            <span id="largest-expense-date">--</span>
-          </p>
-        </section>
-
         <!-- Monthly Spending Comparison -->
         <section class="insight-card accent-rose" id="monthly-comparison-card">
           <p class="insight-label">Monthly Comparison</p>
@@ -74,6 +64,19 @@
       <section class="insight-card pattern-card" id="spending-pattern-card">
         <p class="insight-label">Spending Pattern</p>
         <p class="insight-value pattern-value" id="spending-pattern">Your spending pattern will appear here.</p>
+        <div class="comparison-breakdown">
+          <div class="comparison-item">
+            <span class="comparison-tag">Weekdays</span>
+            <span class="comparison-figure" id="weekday-total">₹0</span>
+            <small id="weekday-percentage">0%</small>
+          </div>
+      
+          <div class="comparison-item">
+            <span class="comparison-tag">Weekends</span>
+            <span class="comparison-figure" id="weekend-total">₹0</span>
+            <small id="weekend-percentage">0%</small>
+          </div>
+        </div>
       </section>
 
     </main>

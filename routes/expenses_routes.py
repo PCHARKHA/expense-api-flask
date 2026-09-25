@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request 
-from datetime import datetime 
+from datetime import datetime,timedelta
 from utils.dashboard import ( calculate_monthly_total,calculate_daily_average ) 
 from utils.database import (create_expense,get_expenses, get_expense_by_id,
                             update_expense_in_db,delete_expense_in_db,
-                            get_highest_spending_category) 
+                            get_highest_spending_category,get_monthly_spending_comparison,get_current_month_expenses) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -198,4 +198,132 @@ def daily_average_spending():
 
     return jsonify({
         "daily_average": daily_average
+    }), 200
+
+
+@expense_bp.route("/expenses/insights/monthly-compare", methods=["GET"])
+@jwt_required()
+def monthly_spending_comparison():
+    user_id = int(get_jwt_identity())
+    # Today's date
+    today = datetime.now().date()
+
+    # First day of current month
+    current_month_start = today.replace(day=1)
+
+    # First day of next month
+    if current_month_start.month == 12:
+        next_month_start = current_month_start.replace(
+            year=current_month_start.year + 1,
+            month=1
+        )
+    else:
+        next_month_start = current_month_start.replace(
+            month=current_month_start.month + 1
+        )
+
+    # First day of previous month
+    previous_month_end = current_month_start - timedelta(days=1)
+    previous_month_start = previous_month_end.replace(day=1)
+
+    result = get_monthly_spending_comparison(
+        user_id,
+        current_month_start.isoformat(),
+        next_month_start.isoformat(),
+        previous_month_start.isoformat()
+    )
+
+    current_total = result["current_total"]
+    previous_total = result["previous_total"]
+
+    #Comparision calculation
+    difference = current_total - previous_total
+
+    if previous_total == 0:
+        percentage_change = None
+    else:
+        percentage_change = (difference / previous_total) * 100
+
+    if difference > 0:
+        status = "increased"
+    elif difference < 0:
+        status = "decreased"
+    else:
+        status = "unchanged"
+
+    return jsonify({
+        "current_month": current_month_start.strftime("%B %Y"),
+        "previous_month": previous_month_start.strftime("%B %Y"),
+        "current_total": round(current_total, 2),
+        "previous_total": round(previous_total, 2),
+        "difference": round(difference, 2),
+        "percentage_change": (
+            round(percentage_change, 2)
+            if percentage_change is not None
+            else None
+        ),
+        "status": status
+    }), 200
+
+@expense_bp.route("/expenses/insights/weekend-pattern", methods=["GET"])
+@jwt_required()
+def weekend_spending():
+    user_id = int(get_jwt_identity())
+    today = datetime.now().date()
+
+    # First day of current month
+    current_month_start = today.replace(day=1)
+
+    # First day of next month
+    if current_month_start.month == 12:
+        next_month_start = current_month_start.replace(
+            year=current_month_start.year + 1,
+            month=1
+        )
+    else:
+        next_month_start = current_month_start.replace(
+            month=current_month_start.month + 1
+        )
+
+    # Get current month's expenses
+    expenses = get_current_month_expenses(
+        user_id,
+        current_month_start.isoformat(),
+        next_month_start.isoformat()
+    )
+
+    weekday_total = 0
+    weekend_total = 0
+
+    for expense in expenses:
+        expense_date = datetime.strptime(expense["date"],"%Y-%m-%d").date()
+
+        if expense_date.weekday() < 5:
+            weekday_total += expense["amount"]
+        else:
+            weekend_total += expense["amount"]
+
+    total = weekday_total + weekend_total
+
+    if total == 0:
+        weekday_percentage = 0
+        weekend_percentage = 0
+    else:
+        weekday_percentage = (weekday_total / total) * 100
+        weekend_percentage = (weekend_total / total) * 100
+
+    if weekend_total > weekday_total:
+        pattern = "weekend"
+    elif weekday_total > weekend_total:
+        pattern = "weekday"
+    else:
+        pattern = "equal"
+
+    return jsonify({
+        "month": current_month_start.strftime("%B %Y"),
+        "weekday_total": round(weekday_total, 2),
+        "weekend_total": round(weekend_total, 2),
+        "weekday_percentage": round(weekday_percentage, 2),
+        "weekend_percentage": round(weekend_percentage, 2),
+        "pattern": pattern
     }), 200

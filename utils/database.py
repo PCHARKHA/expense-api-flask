@@ -9,7 +9,6 @@ def get_db_connection():
 
 def init_db():
     connection = get_db_connection()
-
     connection.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -180,4 +179,55 @@ def get_highest_spending_category(user_id):
         }
 
     return None
+
+def get_monthly_spending_comparison(user_id, current_month_start, next_month_start, previous_month_start):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Current month total
+    cursor.execute("""
+        SELECT COALESCE(SUM(amount), 0)
+        FROM expenses
+        WHERE user_id = ?
+        AND date >= ?
+        AND date < ?
+    """, (user_id, current_month_start, next_month_start))
+
+    current_total = cursor.fetchone()[0]
+
+    # Previous month total
+    cursor.execute("""
+        SELECT COALESCE(SUM(amount), 0)
+        FROM expenses
+        WHERE user_id = ?
+        AND date >= ?
+        AND date < ?
+    """, (user_id, previous_month_start, current_month_start))
+
+    previous_total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return {
+        "current_total": current_total,
+        "previous_total": previous_total
+    }
+
+def get_current_month_expenses(user_id, current_month_start, next_month_start):
+    connection = get_db_connection()
+
+    cursor = connection.execute("""
+        SELECT amount, category, date
+        FROM expenses
+        WHERE user_id = ?
+        AND date >= ?
+        AND date < ?
+    """, (user_id, current_month_start, next_month_start))
+
+    expenses = [dict(row) for row in cursor]
+
+    connection.close()
+    return expenses
+
+
     
