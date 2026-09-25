@@ -19,11 +19,40 @@ export function formatExpenseDate(expenseDate) {
     return `${differenceInDays} days ago`;
 }
 
-export function getAuthToken() {
-    return localStorage.getItem("access_token");
-}
 
 export function handleUnauthorized() {
     localStorage.removeItem("access_token");
     window.location.href = "/";
+}
+
+export async function apiRequest(endpoint, options = {}) {
+    const token = localStorage.getItem("access_token");
+
+    const response = await fetch(endpoint, {
+        ...options,
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            ...options.headers
+        }
+    });
+
+    if (response.status === 401) {
+        handleUnauthorized();
+        return null;
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        console.error("Backend error:", data);
+        return {
+            ok: false,
+            data: data
+        };
+    }
+
+    return {
+        ok: true,
+        data: data
+    };
 }

@@ -2,32 +2,20 @@ from flask import Blueprint, jsonify, request
 from datetime import datetime,timedelta
 from utils.dashboard import ( calculate_monthly_total,calculate_daily_average ) 
 from utils.database import (create_expense,get_expenses, get_expense_by_id,
-                            update_expense_in_db,delete_expense_in_db,
-                            get_highest_spending_category,get_monthly_spending_comparison,
+                            update_expense_in_db,delete_expense_in_db)
+from utils.insight_utils import (get_current_month_range,get_highest_spending_category,get_monthly_spending_comparison,
                             get_current_month_expenses,get_small_expenses,get_spending_days) 
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 expense_bp = Blueprint("expenses",__name__)
-
-@expense_bp.route("/expenses", methods=["POST"])
-@jwt_required()
-def add_expense():
-    data = request.get_json()
-
-    if data is None:
-        return jsonify({
-            "message": "Request body is missing"
-        }), 400
-
+#Helper function
+def validate_expense(data):
     try:
-        expense_data = Expense(**data)
+        return Expense(**data), None
 
     except ValidationError as e:
-        print("PYDANTIC ERROR:", e)
-        print("ERRORS:", e.errors())
-
         errors = []
 
         for error in e.errors():
@@ -36,6 +24,19 @@ def add_expense():
             error.pop("url", None)
             errors.append(error)
 
+        return None, errors
+
+@expense_bp.route("/expenses", methods=["POST"])
+@jwt_required()
+def add_expense():
+    data = request.get_json()
+    if data is None:
+        return jsonify({
+            "message": "Request body is missing"
+        }), 400
+
+    expense_data, errors = validate_expense(data)
+    if errors:
         return jsonify({
             "message": "Validation failed",
             "errors": errors
@@ -91,25 +92,9 @@ def update_expense(id):
         return jsonify({
             "message": "Request body is missing"
         }), 400
-
-    # Validate request using Pydantic
-    try:
-        expense_data = Expense(**data)
-
-    except ValidationError as e:
-        print("PYDANTIC ERROR:", e)
-        print("ERRORS:", e.errors()) #e.errors gives dictionary of errors
-
-        errors = []
-
-        for error in e.errors():
-            error = error.copy()
-            # Cleaning unnecessary internal information
-            # & then return to API JSON's response
-            error.pop("ctx", None)
-            error.pop("url", None)
-            errors.append(error)
-
+    
+    expense_data, errors = validate_expense(data)
+    if errors:
         return jsonify({
             "message": "Validation failed",
             "errors": errors
@@ -128,17 +113,12 @@ def update_expense(id):
 
     # Update database using validated Pydantic data
     update_expense_in_db(
-        id,
-        user_id,
-        expense_data.amount,
-        expense_data.category,
-        expense_data.note,
-        date,
-        expense_data.payment_method
+        id,user_id,
+        expense_data.amount,expense_data.category,expense_data.note,
+        date,expense_data.payment_method
     )
 
-    # Get updated record
-    updated_expense = get_expense_by_id(id,user_id)
+    updated_expense = get_expense_by_id(id,user_id) # Get updated record
 
     return jsonify({
         "message": "Expense updated successfully",
@@ -166,7 +146,7 @@ def delete_expense(id):
     }), 200
 
 
-#Dashboard related routes
+#Spending_insights routes
 @expense_bp.route("/expenses/insights/highest-category", methods=["GET"])
 @jwt_required()
 def highest_spending_category():
@@ -206,22 +186,7 @@ def daily_average_spending():
 @jwt_required()
 def monthly_spending_comparison():
     user_id = int(get_jwt_identity())
-    # Today's date
-    today = datetime.now().date()
-
-    # First day of current month
-    current_month_start = today.replace(day=1)
-
-    # First day of next month
-    if current_month_start.month == 12:
-        next_month_start = current_month_start.replace(
-            year=current_month_start.year + 1,
-            month=1
-        )
-    else:
-        next_month_start = current_month_start.replace(
-            month=current_month_start.month + 1
-        )
+    _, current_month_start, next_month_start = get_current_month_range()
 
     # First day of previous month
     previous_month_end = current_month_start - timedelta(days=1)
@@ -270,27 +235,12 @@ def monthly_spending_comparison():
 @jwt_required()
 def weekend_spending():
     user_id = int(get_jwt_identity())
-    today = datetime.now().date()
 
-    # First day of current month
-    current_month_start = today.replace(day=1)
-
-    # First day of next month
-    if current_month_start.month == 12:
-        next_month_start = current_month_start.replace(
-            year=current_month_start.year + 1,
-            month=1
-        )
-    else:
-        next_month_start = current_month_start.replace(
-            month=current_month_start.month + 1
-        )
-
+    _, current_month_start, next_month_start = get_current_month_range()
     # Get current month's expenses
     expenses = get_current_month_expenses(
         user_id,
-        current_month_start.isoformat(),
-        next_month_start.isoformat()
+        current_month_start.isoformat(),next_month_start.isoformat()
     )
 
     weekday_total = 0
@@ -334,23 +284,11 @@ def weekend_spending():
 def small_expenses():
     user_id = int(get_jwt_identity())
 
-    today = datetime.now().date()
-    current_month_start = today.replace(day=1)
-
-    if current_month_start.month == 12:
-        next_month_start = current_month_start.replace(
-            year=current_month_start.year + 1,
-            month=1
-        )
-    else:
-        next_month_start = current_month_start.replace(
-            month=current_month_start.month + 1
-        )
+    _, current_month_start, next_month_start = get_current_month_range()
 
     data = get_small_expenses(
         user_id,
-        current_month_start.isoformat(),
-        next_month_start.isoformat()
+        current_month_start.isoformat(),next_month_start.isoformat()
     )
 
     return jsonify({
@@ -365,23 +303,11 @@ def small_expenses():
 def no_spend_days():
     user_id = int(get_jwt_identity())
 
-    today = datetime.now().date()
-    current_month_start = today.replace(day=1)
-
-    if current_month_start.month == 12:
-        next_month_start = current_month_start.replace(
-            year=current_month_start.year + 1,
-            month=1
-        )
-    else:
-        next_month_start = current_month_start.replace(
-            month=current_month_start.month + 1
-        )
+    today, current_month_start, next_month_start = get_current_month_range()
 
     spending_days = get_spending_days(
         user_id,
-        current_month_start.isoformat(),
-        next_month_start.isoformat()
+        current_month_start.isoformat(),next_month_start.isoformat()
     )
 
     days_elapsed = today.day

@@ -1,27 +1,17 @@
-import { formatExpenseDate,handleUnauthorized } from "./utils.js";
+import { formatExpenseDate, apiRequest } from "./utils.js";
 let allExpenses = [];
 
 async function loadAllExpenses() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch("/expenses",{
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        const data = await response.json();
+        const result = await apiRequest("/expenses");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
-            return;
-        }
-
-        if (!response.ok) {
-            console.error("Failed to load expenses:", data);
+        if (!result.ok) {
+            console.error("Failed to load expenses:", result.data);
             return;
         }
         //else
-        allExpenses = data;
+        allExpenses = result.data;
         displayExpenses(allExpenses);
 
     } catch (error) {
@@ -121,32 +111,23 @@ categoryFilter.addEventListener("change", function () {
 
 async function deleteExpense(id) {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(`/expenses/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+        const result = await apiRequest(`/expenses/${id}`, {
+            method: "DELETE"
         });
 
-        const data = await response.json();
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result) return;
+
+        if (!result.ok) {
+            showActionMessage(result.data.message, "error");
             return;
         }
-        if (!response.ok) {
-            showActionMessage(data.message, "error");
-            return;
-        }
-        
-        showActionMessage(data.message);
+        showActionMessage(result.data.message);
         loadAllExpenses();
     } catch (error) {
         console.error("Error deleting expense:", error);
         showActionMessage("Something went wrong. Please try again.", "error");
     }
 }
-
 
 function createEditCard(expense) {
     const editCard = document.createElement("div");
@@ -171,17 +152,10 @@ function createEditCard(expense) {
     const categorySelect = document.createElement("select");
 
     const categories = [
-        "Food",
-        "Transport",
-        "Groceries",
-        "Shopping",
-        "Entertainment",
-        "Bills",
-        "Gifts",
-        "Health",
-        "Rent",
-        "Education",
-        "Other"
+        "Food","Transport","Groceries",
+        "Shopping","Entertainment","Bills",
+        "Gifts","Health","Rent",
+        "Education","Other"
     ];
 
     categories.forEach(function (category) {
@@ -203,14 +177,7 @@ function createEditCard(expense) {
 
     const paymentSelect = document.createElement("select");
 
-    const paymentMethods = [
-        "UPI",
-        "Cash",
-        "Card",
-        "Bank Transfer",
-        "Other"
-    ];
-
+    const paymentMethods = [ "UPI","Cash","Card","Bank Transfer","Other"];
     paymentMethods.forEach(function (method) {
         const option = document.createElement("option");
 
@@ -283,12 +250,10 @@ function createEditCard(expense) {
 
 async function updateExpense(id, amount, category, note,payment_method) {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(`/expenses/${id}`, {
+        const result = await apiRequest(`/expenses/${id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 amount: Number(amount),
@@ -298,22 +263,13 @@ async function updateExpense(id, amount, category, note,payment_method) {
             })
         });
 
-        const data = await response.json();
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result) return;
+        if (!result.ok) {
+            showActionMessage(result.data.message, "error");
             return;
         }
         
-        const actionMessage = document.getElementById("action-message");
-        actionMessage.textContent = data.message;
-        actionMessage.style.display = "block";
-
-        if (!response.ok) {
-            showActionMessage(data.message, "error");
-            return;
-        }
-        
-        showActionMessage(data.message);
+        showActionMessage(result.data.message);
         loadAllExpenses(); // Loads all updated expenses
         
         document.querySelector(".edit-card").remove(); // Closes edit card

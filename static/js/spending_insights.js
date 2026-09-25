@@ -1,25 +1,16 @@
-import { handleUnauthorized } from "./utils.js";
+import { apiRequest } from "./utils.js";
 
 async function loadHighestSpendingCategory() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch("/expenses/insights/highest-category", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+        const result = await apiRequest("/expenses/insights/highest-category");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
 
         document.getElementById("highest-category").textContent =data.category;
         document.getElementById("highest-category-amount").textContent =`₹ ${data.amount}`;
@@ -33,23 +24,15 @@ async function loadHighestSpendingCategory() {
 
 async function loadDailyAverage() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch("/expenses/insights/daily-average", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+        const result = await apiRequest("/expenses/insights/daily-average");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
 
         document.getElementById("daily-average").textContent =`₹ ${data.daily_average} / day`;
 
@@ -60,26 +43,15 @@ async function loadDailyAverage() {
 
 async function loadMonthlyComparison() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(
-            "/expenses/insights/monthly-compare",
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
+        const result = await apiRequest("/expenses/insights/monthly-compare");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
 
         // Display current and previous month totals
         document.getElementById("current-month-total").textContent =`₹ ${data.current_total}`;
@@ -106,26 +78,15 @@ async function loadMonthlyComparison() {
 
 async function loadWeekendPattern() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(
-            "/expenses/insights/weekend-pattern",
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
+        const result = await apiRequest("/expenses/insights/weekend-pattern");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
 
         // Display spending amounts
         document.getElementById("weekday-total").textContent =`₹ ${data.weekday_total}`;
@@ -156,26 +117,15 @@ async function loadWeekendPattern() {
 
 async function loadSmallExpenses() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(
-            "/expenses/insights/small-expenses",
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
+        const result = await apiRequest("/expenses/insights/small-expenses");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
 
         document.getElementById("small-expense-count").textContent = `${data.count} small expenses`;
         document.getElementById("small-expense-total").textContent = `₹ ${data.total}`;
@@ -186,26 +136,16 @@ async function loadSmallExpenses() {
 
 async function loadNoSpendDays() {
     try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch(
-            "/expenses/insights/no-spend-days",
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
+        const result = await apiRequest("/expenses/insights/no-spend-days");
+        if (!result) return;
 
-        if (response.status === 401) {
-            handleUnauthorized();
+        if (!result.ok) {
+            console.error("Backend error:", result.data);
             return;
         }
 
-        const data = await response.json();
-        if (!response.ok) {
-            console.error("Backend error:", data);
-            return;
-        }
+        const data = result.data;
+
         document.getElementById("no-spend-days").textContent =  `${data.no_spend_days} days`;
     } catch (error) {
         console.error("Error loading no-spend days:", error);
