@@ -1,39 +1,36 @@
 /* ==========================================================================
-   PERSONAL FINANCE MANAGER — All Expenses page styles
+   SPENDWISE — All Expenses page styles
    ==========================================================================
-   Same palette and spacing scale as add_expense.html and dashboard.css,
-   so this page reads as part of the same application. Shadows are kept
-   very light here — mostly borders do the work of separating elements.
+   Same tokens as the rest of SpendWise (navy + teal). Mobile-first: base
+   rules target small phones (~375–430px); the expense list becomes a
+   structured, table-like grid from 768px up.
    ========================================================================== */
 
    :root {
-    /* Colors */
-    --color-bg: #F5F7F4;
-    --color-surface: #FFFFFF;
-    --color-primary: #1B4332;
-    --color-primary-hover: #163C2B;
-    --color-text: #1C1F1D;
-    --color-text-muted: #6E766F;
-    --color-border: #E2E5E0;
+    /* Colors — SpendWise system */
+    --primary: #1E3A5F;
+    --primary-hover: #162F4D;
   
-    /* Category tag colors (soft, low-saturation) */
-    --color-food-bg: #FDEBD8;
-    --color-food-text: #B4622A;
+    --accent: #14B8A6;
+    --accent-light: #E6F7F5;
   
-    --color-transport-bg: #E4F0FB;
-    --color-transport-text: #2E6FA6;
+    --background: #F7F9FC;
+    --surface: #FFFFFF;
+    --surface-soft: #F1F5F9;
   
-    --color-groceries-bg: #E6F3EC;
-    --color-groceries-text: #2F855A;
+    --text: #172033;
+    --text-muted: #667085;
+    --text-light: #98A2B3;
   
-    --color-entertainment-bg: #F3E8FB;
-    --color-entertainment-text: #7A3FA0;
+    --border: #E4E7EC;
   
-    --color-bills-bg: #FCE8E8;
-    --color-bills-text: #B3453D;
+    --danger: #B42318;
+    --danger-soft: #FEF3F2;
+    --danger-border: #FDA29B;
   
-    --color-health-bg: #E4F6F3;
-    --color-health-text: #1F7A6C;
+    --success: #027A48;
+    --success-soft: #ECFDF3;
+    --success-border: #6CE9A6;
   
     /* Typography */
     --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
@@ -47,8 +44,11 @@
   
     /* Shape */
     --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+  
+    /* Motion */
+    --transition-fast: 0.15s ease;
   }
   
   /* ==========================================================================
@@ -62,14 +62,19 @@
   body {
     margin: 0;
     font-family: var(--font-main);
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    background-color: var(--background);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
   
+  a {
+    text-decoration: none;
+  }
+  
   a:focus-visible,
-  select:focus-visible {
-    outline: 2px solid var(--color-primary);
+  select:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
   
@@ -79,22 +84,42 @@
   
   .site-nav {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-md);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .nav-brand {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
     gap: var(--space-md);
-    padding: var(--space-md) var(--space-lg);
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
   }
   
   .nav-link {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color 0.15s ease;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
   }
   
   .nav-link:hover {
-    color: var(--color-primary);
+    color: var(--primary);
+  }
+  
+  .nav-link-current {
+    color: var(--text);
+    font-weight: 700;
   }
   
   /* ==========================================================================
@@ -102,9 +127,9 @@
      ========================================================================== */
   
   .all-expenses-wrapper {
-    max-width: 720px;
+    max-width: 880px;
     margin: 0 auto;
-    padding: var(--space-xl) var(--space-md);
+    padding: var(--space-lg) var(--space-md) var(--space-xl);
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
@@ -115,21 +140,52 @@
      ========================================================================== */
   
   .page-header {
-    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
   }
   
   .page-heading {
     margin: 0 0 4px 0;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: var(--color-primary);
+    color: var(--text);
   }
   
   .page-subtitle {
     margin: 0;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+  
+  /* Primary CTA for this page — same treatment as Add Expense elsewhere */
+  .add-expense-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-weight: 700;
     font-size: 0.95rem;
-    color: var(--color-text-muted);
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 13px 20px;
+    min-height: 46px;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  }
+  
+  .add-expense-btn:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: 0 6px 14px rgba(30, 58, 95, 0.2);
+  }
+  
+  .add-expense-btn:active {
+    transform: scale(0.99);
   }
   
   /* ==========================================================================
@@ -138,44 +194,52 @@
   
   .filter-section {
     display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+    flex-direction: column;
+    gap: var(--space-xs);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: var(--space-md);
   }
   
   .filter-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
   }
   
   .category-filter {
+    width: 100%;
     font-family: inherit;
     font-size: 0.92rem;
-    color: var(--color-text);
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    color: var(--text);
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 10px 38px 10px 14px;
+    padding: 11px 38px 11px 14px;
     cursor: pointer;
-    min-width: 180px;
+    min-height: 44px;
   
     /* Custom dropdown arrow, no external icon library needed */
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E766F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
-    transition: border-color 0.15s ease;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
   }
   
   .category-filter:hover {
-    border-color: var(--color-primary);
+    border-color: var(--primary);
+    background-color: var(--surface);
+  }
+  
+  .category-filter:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
   }
   
   /* ==========================================================================
@@ -183,10 +247,17 @@
      ========================================================================== */
   
   .expenses-section {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-md);
+  }
+  
+  .section-title {
+    margin: 0 0 var(--space-md) 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
   }
   
   .all-expenses-list {
@@ -194,31 +265,29 @@
     flex-direction: column;
   }
   
+  /* Desktop-only column header — hidden on mobile, shown at 768px (see below) */
+  .expense-list-header {
+    display: none;
+  }
+  
   /* ----------------------------------------------------------------------
      Expense item
      ------------------------------------------------------------------------
-     These elements will be created dynamically by all_expenses.js.
-     Each one is expected to follow this structure:
-  
-     <div class="expense-item">
-       <span class="category-tag category-food">Food</span>
-       <span class="expense-note">Lunch with team</span>
-       <span class="expense-amount">₹ 350</span>
-       <span class="expense-date">Today</span>
-       <span class="expense-actions">
-         <button class="edit-expense-btn" type="button">Edit</button>
-         <button class="delete-expense-btn" type="button">Delete</button>
-       </span>
-     </div>
+     Created dynamically by all_expenses.js in this exact child order:
+     category-tag, expense-note, expense-amount, expense-date, expense-actions.
+     Mobile-first: stacked. From 768px, becomes a 5-column grid that lines
+     up with .expense-list-header above.
      ---------------------------------------------------------------------- */
   
   .expense-item {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-md);
+    row-gap: 6px;
+    column-gap: var(--space-sm);
     padding: var(--space-sm) var(--space-xs);
-    border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.15s ease;
+    border-bottom: 1px solid var(--border);
+    transition: background-color var(--transition-fast);
   }
   
   .expense-item:last-child {
@@ -226,265 +295,418 @@
   }
   
   .expense-item:hover {
-    background-color: var(--color-bg);
+    background-color: var(--background);
   }
   
-  /* Category tag */
+  /* Category tag — restrained dot + neutral pill, not a rainbow of colors */
   .category-tag {
+    order: 1;
     flex: 0 0 auto;
-    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
     font-weight: 700;
-    padding: 6px 12px;
+    padding: 5px 10px 5px 8px;
     border-radius: 999px;
+    background-color: var(--surface-soft);
+    color: var(--text-muted);
     white-space: nowrap;
   }
   
-  .category-food {
-    background-color: var(--color-food-bg);
-    color: var(--color-food-text);
-  }
-  
-  .category-transport {
-    background-color: var(--color-transport-bg);
-    color: var(--color-transport-text);
-  }
-  
-  .category-groceries {
-    background-color: var(--color-groceries-bg);
-    color: var(--color-groceries-text);
-  }
-  
-  .category-entertainment {
-    background-color: var(--color-entertainment-bg);
-    color: var(--color-entertainment-text);
-  }
-  
-  .category-bills {
-    background-color: var(--color-bills-bg);
-    color: var(--color-bills-text);
-  }
-  
-  .category-health {
-    background-color: var(--color-health-bg);
-    color: var(--color-health-text);
-  }
-  
-  /* Note fills the remaining space between the tag and amount/date */
-  .expense-note {
-    flex: 1 1 auto;
-    font-size: 0.92rem;
-    color: var(--color-text);
-  }
-  
-  /* Amount is the clearest, boldest number in the row */
-  .expense-amount {
+  .category-tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--cat-color, var(--text-light));
     flex: 0 0 auto;
+  }
+  
+  .category-food          { --cat-color: #C2703D; }
+  .category-transport      { --cat-color: #3E7CB1; }
+  .category-groceries      { --cat-color: #4C8C64; }
+  .category-shopping       { --cat-color: #9C6ADE; }
+  .category-entertainment  { --cat-color: #7C5CBF; }
+  .category-bills          { --cat-color: #B24C4C; }
+  .category-gifts          { --cat-color: #C2578C; }
+  .category-health         { --cat-color: #3F9488; }
+  .category-rent           { --cat-color: #6B7280; }
+  .category-education      { --cat-color: #4A6FA5; }
+  .category-other          { --cat-color: #98A2B3; }
+  
+  .expense-amount {
+    order: 2;
+    flex: 0 0 auto;
+    margin-left: auto;
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--color-text);
+    color: var(--text);
   }
   
-  /* Date stays subtle and secondary */
+  .expense-note {
+    order: 3;
+    flex: 1 1 100%;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+  
   .expense-date {
-    flex: 0 0 auto;
-    font-size: 0.82rem;
-    color: var(--color-text-muted);
-    min-width: 80px;
-    text-align: right;
+    order: 4;
+    flex: 1 1 100%;
+    font-size: 0.78rem;
+    color: var(--text-light);
   }
   
-  /* Action buttons (Edit / Delete) — inserted dynamically by all_expenses.js */
   .expense-actions {
-    flex: 0 0 auto;
+    order: 5;
+    flex: 1 1 100%;
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-top: 2px;
   }
-
+  
   .edit-expense-btn,
   .delete-expense-btn {
     font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.82rem;
+    font-weight: 700;
     line-height: 1;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 6px 12px;
-    background-color: var(--color-surface);
+    padding: 9px 16px;
+    min-height: 40px;
+    background-color: var(--surface);
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
   }
-
+  
   .edit-expense-btn {
-    color: var(--color-primary);
+    color: var(--primary);
   }
-
+  
   .edit-expense-btn:hover {
-    background-color: var(--color-bg);
-    border-color: var(--color-primary);
+    background-color: var(--surface-soft);
+    border-color: var(--primary);
   }
-
+  
   .delete-expense-btn {
-    color: var(--color-bills-text);
+    color: var(--danger);
   }
-
+  
   .delete-expense-btn:hover {
-    background-color: var(--color-bills-bg);
-    border-color: var(--color-bills-text);
+    background-color: var(--danger-soft);
+    border-color: var(--danger);
   }
-
+  
   /* ==========================================================================
      EMPTY STATE
-     ========================================================================== */
+     ==========================================================================
+     Hidden by default so it doesn't flash before all_expenses.js decides
+     whether to show it (JS toggles this with an inline style either way). */
+  
+  #empty-state {
+    display: none;
+  }
   
   .empty-state {
     text-align: center;
     padding: var(--space-xl) var(--space-md);
   }
   
+  .empty-state-title {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  
   .empty-state-message {
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
+    margin: 0 0 var(--space-md) 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  
+  .empty-state-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    background-color: var(--primary);
+    padding: 11px 20px;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast);
+  }
+  
+  .empty-state-cta:hover {
+    background-color: var(--primary-hover);
   }
   
   /* ==========================================================================
-     Responsive adjustments
+     CONTEXTUAL MESSAGE
      ========================================================================== */
   
-  @media (max-width: 560px) {
-    .filter-section {
-      flex-direction: column;
-      align-items: stretch;
-    }
+  .context-message {
+    margin: 0;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: #0F766E;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
   
-    .category-filter {
-      width: 100%;
-    }
+  /* ==========================================================================
+     ACTION MESSAGE (success / error banner above the list)
+     ========================================================================== */
   
-    .expense-item {
-      flex-wrap: wrap;
-      row-gap: 6px;
-    }
+  .action-message {
+    display: none;
+    margin-bottom: var(--space-md);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
   
-    .expense-note {
-      flex: 1 1 100%;
-      order: 3;
-    }
+  .action-message.success {
+    background-color: var(--success-soft);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
   
-    .expense-date {
-      text-align: left;
-      min-width: 0;
-    }
-
-    .expense-actions {
-      order: 4;
-      margin-left: auto;
-    }
-}
-
-/* ==========================================================
-   EDIT EXPENSE CARD
-   ========================================================== */
-
-   .edit-card {
-    width: min(420px, 90%);
+  .action-message.error {
+    background-color: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid var(--danger-border);
+  }
+  
+  /* ==========================================================================
+     EDIT EXPENSE CARD
+     ==========================================================================
+     Appended directly to <body> by all_expenses.js with no backdrop element,
+     so the dimmed overlay below is done with a giant box-shadow spread
+     instead — a pure-CSS technique that needs no HTML/JS change. */
+  
+  .edit-card {
+    width: min(420px, 90vw);
     padding: 28px;
-    background: #FFFFFF;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+  
+    box-shadow:
+      0 0 0 9999px rgba(23, 32, 51, 0.55),
+      0 24px 60px rgba(16, 24, 40, 0.18),
+      0 4px 12px rgba(16, 24, 40, 0.06);
+  
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
+    max-height: 90vh;
+    overflow-y: auto;
+  
+    font-family: var(--font-main);
+  
     z-index: 1000;
-}
-
-.edit-card h2 {
+  }
+  
+  .edit-card h2 {
     margin: 0 0 24px;
-    color: #1B4332;
-    font-size: 22px;
-}
-
-.edit-card label {
+    color: var(--text);
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+  
+  .edit-card label {
     display: block;
     margin-bottom: 6px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.edit-card input,
-.edit-card select {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .edit-card input,
+  .edit-card select {
     width: 100%;
     box-sizing: border-box;
-    padding: 11px 12px;
+    padding: 12px 13px;
     margin-bottom: 18px;
-
-    border: 1px solid #D9E2DC;
-    border-radius: 8px;
-
+    min-height: 44px;
+  
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  
     font-family: inherit;
-    font-size: 14px;
-}
-
-.edit-card input:focus,
-.edit-card select:focus {
+    font-size: 0.92rem;
+    color: var(--text);
+  
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  
+  .edit-card input:hover,
+  .edit-card select:hover {
+    border-color: var(--primary);
+  }
+  
+  .edit-card input:focus,
+  .edit-card select:focus {
     outline: none;
-    border-color: #1B4332;
-}
-
-.edit-card-actions {
+    background-color: var(--surface);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+  }
+  
+  .edit-card-actions {
     display: flex;
     gap: 10px;
     margin-top: 6px;
-}
-
-.edit-card-actions button {
+  }
+  
+  .edit-card-actions button {
     flex: 1;
-    padding: 11px 16px;
-    border: none;
-    border-radius: 8px;
-
+    padding: 12px 16px;
+    min-height: 46px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+  
     font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 0.92rem;
+    font-weight: 700;
     cursor: pointer;
-}
-
-.update-expense-btn {
-    background: #1B4332;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  }
+  
+  .update-expense-btn {
+    background-color: var(--primary);
     color: #FFFFFF;
-}
-
-.update-expense-btn:hover {
-    background: #143728;
-}
-
-.cancel-edit-btn {
-    background: #E9EFEB;
-    color: #1B4332;
-}
-
-.cancel-edit-btn:hover {
-    background: #DDE7E1;
-}
-
-.action-message {
-  display: none;
-  margin-bottom: 16px;
-  padding: 12px 16px;
-  border-radius: 8px;
-
-  background: #E8F3EC;
-  color: #1B4332;
-
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.action-message.error {
-  background: #FDECEC;
-  color: #B42318;
-}
+    border-color: var(--primary);
+  }
+  
+  .update-expense-btn:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+  }
+  
+  .cancel-edit-btn {
+    background-color: var(--surface-soft);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  
+  .cancel-edit-btn:hover {
+    background-color: var(--border);
+  }
+  
+  /* ==========================================================================
+     Responsive — small tablets and large phones (landscape)
+     ========================================================================== */
+  
+  @media (min-width: 480px) {
+    .add-expense-btn {
+      width: auto;
+    }
+  
+    .page-header {
+      align-items: center;
+    }
+  }
+  
+  /* Tablets: filter becomes a compact horizontal control */
+  @media (min-width: 640px) {
+    .all-expenses-wrapper {
+      padding: var(--space-xl) var(--space-lg);
+    }
+  
+    .filter-section {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .category-filter {
+      width: auto;
+      min-width: 220px;
+    }
+  }
+  
+  /* Laptops and up: expense rows become a proper structured list/table,
+     lined up under the column header */
+  @media (min-width: 768px) {
+    .expense-list-header {
+      display: grid;
+      grid-template-columns: 140px 1fr 100px 110px 140px;
+      column-gap: var(--space-md);
+      padding: 0 var(--space-xs) var(--space-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-xs);
+    }
+  
+    .expense-item {
+      display: grid;
+      grid-template-columns: 140px 1fr 100px 110px 140px;
+      column-gap: var(--space-md);
+      row-gap: 0;
+    }
+  
+    .category-tag,
+    .expense-note,
+    .expense-amount,
+    .expense-date,
+    .expense-actions {
+      order: initial;
+      flex: initial;
+      margin-left: 0;
+      margin-top: 0;
+    }
+  
+    .expense-note {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  
+    .expense-date {
+      color: var(--text-muted);
+    }
+  
+    .expense-actions {
+      justify-content: flex-start;
+      gap: var(--space-xs);
+    }
+  }
+  
+  /* Desktops and large laptops — use the extra width for margins, not a
+     full-bleed list */
+  @media (min-width: 1024px) {
+    .all-expenses-wrapper {
+      max-width: 960px;
+      padding: var(--space-xl) var(--space-xl);
+    }
+  
+    .page-heading {
+      font-size: 1.65rem;
+    }
+  
+    .expenses-section {
+      padding: var(--space-lg);
+    }
+  }
+  
+  @media (min-width: 1440px) {
+    .all-expenses-wrapper {
+      max-width: 1040px;
+    }
+  }

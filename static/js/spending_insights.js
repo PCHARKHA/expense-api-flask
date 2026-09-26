@@ -95,6 +95,8 @@ async function loadWeekendPattern() {
         // Display percentages
         document.getElementById("weekday-percentage").textContent =`${data.weekday_percentage}%`;
         document.getElementById("weekend-percentage").textContent = `${data.weekend_percentage}%`;
+        document.getElementById("weekday-bar-fill").style.width = `${data.weekday_percentage}%`;
+        document.getElementById("weekend-bar-fill").style.width = `${data.weekend_percentage}%`;
         
         // Display overall pattern
         const patternElement = document.getElementById("spending-pattern");

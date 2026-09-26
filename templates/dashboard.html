@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Personal Finance Manager</title>
+  <title>Dashboard | SpendWise</title>
 
-  <!-- Google Font: Manrope, kept consistent with the Add Expense page -->
+  <!-- Google Font: Manrope, kept consistent with the rest of SpendWise -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -19,12 +19,22 @@
          HEADER SECTION
          ========================================================== -->
     <header class="dashboard-header">
-      <div class="header-text">
-        <h1 class="app-title">Personal Finance Manager</h1>
-        <p class="app-subtitle">Track and understand your spending</p>
-      </div>
 
-      <a href="{{ url_for('pages.add_expense_page') }}" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
+      <!-- New: quiet Home navigation, added above the title -->
+      <nav class="page-navigation" aria-label="Breadcrumb">
+        <a href="{{ url_for('pages.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span class="current-page" aria-current="page">Dashboard</span>
+      </nav>
+
+      <div class="header-main">
+        <div class="header-text">
+          <h1 class="app-title">SpendWise</h1>
+          <p class="app-subtitle">Track and understand your spending</p>
+        </div>
+
+        <a href="{{ url_for('pages.add_expense_page') }}" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
+      </div>
     </header>
 
     <!-- ==========================================================
@@ -94,14 +104,16 @@
 
       </div>
 
-      <a href="{{ url_for('pages.expenses_page') }}" class="view-all-link" id="view-all-link">View All Expenses</a>
-      <a href="{{ url_for('pages.spending_insights_page') }}" class="insights-button">
-        Know Your Spending in Depth →
-    </a>
+      <!-- New: small wrapper so the two secondary actions align cleanly -->
+      <div class="recent-actions">
+        <a href="{{ url_for('pages.expenses_page') }}" class="view-all-link" id="view-all-link">View All Expenses</a>
+        <a href="{{ url_for('pages.spending_insights_page') }}" class="insights-button">
+          Know Your Spending in Depth →
+        </a>
+      </div>
     </section>
-    
 
   </main>
-  <script type ="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>

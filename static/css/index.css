@@ -1,209 +1,690 @@
 /* ==========================================================================
-   PERSONAL FINANCE MANAGER — Landing page (index) styles
-   ==========================================================================
-   Palette and spacing match the Add Expense page so the whole app feels
-   like one product. Kept intentionally subtle — no gradients or extra
-   color here, per the landing page brief.
+   SPENDWISE — Landing Page
    ========================================================================== */
 
    :root {
-    /* Colors (same brand palette as add_expense.html) */
-    --color-bg: #F5F7F4;
+    /* Brand */
+    --color-primary: #1E3A5F;
+    --color-primary-hover: #162F4D;
+    --color-accent: #14B8A6;
+    --color-accent-light: #E6F7F5;
+
+    /* Backgrounds */
+    --color-bg: #F7F9FC;
     --color-surface: #FFFFFF;
-    --color-primary: #1B4332;
-    --color-primary-hover: #163C2B;
-    --color-text: #1C1F1D;
-    --color-text-muted: #6E766F;
-    --color-border: #E2E5E0;
-  
+    --color-surface-soft: #F1F5F9;
+
+    /* Text */
+    --color-text: #172033;
+    --color-text-muted: #667085;
+    --color-text-light: #98A2B3;
+
+    /* Borders */
+    --color-border: #E4E7EC;
+
     /* Typography */
     --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
-  
-    /* Spacing scale */
+
+    /* Spacing */
+    --space-xs: 8px;
     --space-sm: 12px;
     --space-md: 20px;
-    --space-lg: 28px;
-    --space-xl: 40px;
-  
+    --space-lg: 32px;
+    --space-xl: 48px;
+    --space-2xl: 80px;
+    --space-3xl: 110px;
+
     /* Shape */
     --radius-sm: 8px;
     --radius-md: 14px;
-  }
-  
-  /* ==========================================================================
-     Reset / base
-     ========================================================================== */
-  
-  * {
+    --radius-lg: 20px;
+}
+
+
+/* ==========================================================================
+   RESET / BASE
+   ========================================================================== */
+
+* {
     box-sizing: border-box;
-  }
-  
-  body {
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
     margin: 0;
     font-family: var(--font-main);
     background-color: var(--color-bg);
     color: var(--color-text);
     -webkit-font-smoothing: antialiased;
-  }
-  
-  a:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-  
-  /* ==========================================================================
-     HEADER
-     ========================================================================== */
-  
-  .site-header {
-    padding: var(--space-md) var(--space-lg);
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-surface);
-  }
-  
-  .brand-name {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    color: var(--color-primary);
-  }
+}
 
-  .login-button {
-    font-family: 'Manrope', sans-serif;
+a {
+    color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.site-header {
+    height: 72px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    text-decoration: none;
+}
+
+.brand-name {
+    margin: 0;
+
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+
+    color: var(--color-primary);
+}
+
+.login-button {
+    font-family: inherit;
     font-size: 14px;
     font-weight: 700;
 
-    color: #1B4332;
+    color: var(--color-primary);
     background-color: transparent;
 
-    border: 1px solid #1B4332;
-    border-radius: 6px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
 
-    padding: 9px 18px;
+    padding: 9px 20px;
 
     cursor: pointer;
-}
-  
-  /* ==========================================================================
-     HERO SECTION
-     ========================================================================== */
-  
-  .hero-section {
-    min-height: calc(100vh - 65px); /* fills the space below the header */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--space-xl) var(--space-lg);
-  }
-  
-  .hero-heading {
-    margin: 0 0 var(--space-md) 0;
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    max-width: 600px;
-  }
-  
-  .hero-description {
-    margin: 0 0 var(--space-lg) 0;
-    font-size: 1.05rem;
-    color: var(--color-text-muted);
-    max-width: 480px;
-    line-height: 1.6;
-  }
-  
-  /* ==========================================================================
-     CALL-TO-ACTION BUTTONS
-     ========================================================================== */
-  
-  .hero-actions {
-    display: flex;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .btn {
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 14px 28px;
-    border-radius: var(--radius-sm);
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-  }
 
-  .view-expenses-link {
-    display: inline-block;
-    margin-top: 18px;
-    padding: 10px 18px;
-
-    color: #24483b;
-    background-color: transparent;
-    border: 1px solid #24483b;
-    border-radius: 8px;
-
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-
-    transition: background-color 0.2s ease,
-                color 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.view-expenses-link:hover {
-    background-color: #24483b;
-    color: #ffffff;
-}
-  
-  /* Primary action: solid fill, matches the brand green */
-  .btn-primary {
+.login-button:hover {
     background-color: var(--color-primary);
     color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+
+.hero-section {
+    min-height: 650px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 90px 24px 100px;
+
+    background-color: var(--color-bg);
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 760px;
+}
+
+.hero-label {
+    margin: 0 0 18px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+
+    color: var(--color-accent);
+}
+
+.hero-heading {
+    margin: 0 auto 24px;
+
+    max-width: 720px;
+
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.08;
+
+    font-weight: 800;
+    letter-spacing: -0.055em;
+
+    color: var(--color-text);
+}
+
+.hero-heading span {
+    display: block;
+    color: var(--color-primary);
+}
+
+.hero-description {
+    margin: 0 auto 34px;
+
+    max-width: 620px;
+
+    font-size: 1.05rem;
+    line-height: 1.75;
+
+    color: var(--color-text-muted);
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+}
+
+.hero-note {
+    margin: 22px 0 0;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: var(--color-text-light);
+}
+
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+
+    padding: 13px 25px;
+
+    border-radius: var(--radius-sm);
+
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* Primary */
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+
     border: 1px solid var(--color-primary);
-  }
-  
-  .btn-primary:hover {
+
+    box-shadow: 0 5px 14px rgba(30, 58, 95, 0.14);
+}
+
+.btn-primary:hover {
     background-color: var(--color-primary-hover);
     border-color: var(--color-primary-hover);
-  }
-  
-  /* Secondary action: quieter outline style so it doesn't compete
-     with "Add Expense" for attention */
-  .btn-secondary {
-    background-color: transparent;
-    color: var(--color-primary);
-    border: 1px solid var(--color-border);
-  }
-  
-  .btn-secondary:hover {
-    border-color: var(--color-primary);
-    background-color: var(--color-surface);
-  }
-  
-  /* ==========================================================================
-     Responsive adjustments
-     ========================================================================== */
-  
-  @media (max-width: 480px) {
-    .hero-heading {
-      font-size: 1.75rem;
-    }
-  
-    .hero-actions {
-      flex-direction: column;
-      width: 100%;
-      max-width: 280px;
-    }
-  
-    .btn {
-      width: 100%;
-      text-align: center;
-    }
-  }
 
-  
+    box-shadow: 0 7px 18px rgba(30, 58, 95, 0.20);
+}
+
+
+/* Secondary */
+
+.btn-secondary {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+
+    border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-primary);
+    background-color: #FFFFFF;
+}
+
+
+/* ==========================================================================
+   INSIGHTS SECTION
+   ========================================================================== */
+
+.insights-section {
+    padding: var(--space-3xl) 6%;
+
+    background-color: var(--color-surface);
+}
+
+.section-heading {
+    max-width: 680px;
+
+    margin: 0 auto 52px;
+
+    text-align: center;
+}
+
+.section-label {
+    margin: 0 0 12px;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+
+    color: var(--color-accent);
+}
+
+.section-heading h2 {
+    margin: 0 0 16px;
+
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.2;
+
+    letter-spacing: -0.04em;
+}
+
+.section-heading p:last-child {
+    margin: 0;
+
+    font-size: 1rem;
+    line-height: 1.7;
+
+    color: var(--color-text-muted);
+}
+
+
+/* ==========================================================================
+   INSIGHT CARDS
+   ========================================================================== */
+
+.insight-grid {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.insight-card {
+    padding: 28px;
+
+    background-color: var(--color-bg);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.insight-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #CDD5DF;
+
+    box-shadow: 0 10px 25px rgba(16, 24, 40, 0.06);
+}
+
+.insight-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.insight-card h3 {
+    margin: 0 0 9px;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    color: var(--color-text);
+}
+
+.insight-card p {
+    margin: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.65;
+
+    color: var(--color-text-muted);
+}
+
+
+/* ==========================================================================
+   INSIGHTS CTA
+   ========================================================================== */
+
+.insights-cta {
+    margin-top: 40px;
+
+    text-align: center;
+}
+
+.text-button {
+    color: var(--color-primary);
+
+    font-size: 0.9rem;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.text-button:hover {
+    color: var(--color-accent);
+}
+
+
+/* ==========================================================================
+   HOW IT WORKS
+   ========================================================================== */
+
+.how-it-works-section {
+    padding: var(--space-3xl) 6%;
+
+    background-color: var(--color-bg);
+}
+
+.steps-grid {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 0;
+}
+
+.step-card {
+    padding: 0 42px;
+
+    border-right: 1px solid var(--color-border);
+}
+
+.step-card:first-child {
+    padding-left: 0;
+}
+
+.step-card:last-child {
+    padding-right: 0;
+    border-right: none;
+}
+
+.step-number {
+    display: block;
+
+    margin-bottom: 22px;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+
+    color: var(--color-accent);
+}
+
+.step-card h3 {
+    margin: 0 0 10px;
+
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.step-card p {
+    margin: 0;
+
+    font-size: 0.9rem;
+    line-height: 1.7;
+
+    color: var(--color-text-muted);
+}
+
+
+/* ==========================================================================
+   FINAL CTA
+   ========================================================================== */
+
+.final-cta-section {
+    padding: 90px 24px;
+
+    text-align: center;
+
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.final-cta-section h2 {
+    margin: 0 auto 15px;
+
+    max-width: 650px;
+
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.2;
+
+    letter-spacing: -0.04em;
+}
+
+.final-cta-section p {
+    max-width: 560px;
+
+    margin: 0 auto 28px;
+
+    font-size: 0.98rem;
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.final-cta-section .btn-primary {
+    background-color: #FFFFFF;
+    color: var(--color-primary);
+
+    border-color: #FFFFFF;
+
+    box-shadow: none;
+}
+
+.final-cta-section .btn-primary:hover {
+    background-color: #F1F5F9;
+    border-color: #F1F5F9;
+}
+
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.site-footer {
+    min-height: 72px;
+
+    padding: 20px 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #142A43;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    font-size: 0.8rem;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+.site-footer a {
+    color: rgba(255, 255, 255, 0.8);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    color: #FFFFFF;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 850px) {
+
+    .insight-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .step-card,
+    .step-card:first-child,
+    .step-card:last-child {
+        padding: 0 0 35px;
+
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .step-card:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .site-header {
+        height: 64px;
+        padding: 0 20px;
+    }
+
+    .hero-section {
+        min-height: 600px;
+        padding: 70px 20px;
+    }
+
+    .hero-heading {
+        font-size: 2.55rem;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+
+        width: 100%;
+        max-width: 300px;
+
+        margin: 0 auto;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .insights-section,
+    .how-it-works-section {
+        padding: 75px 20px;
+    }
+
+    .insight-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .insight-card {
+        padding: 24px;
+    }
+
+    .final-cta-section {
+        padding: 75px 20px;
+    }
+
+    .site-footer {
+        padding: 20px;
+    }
+}
+
+
+@media (max-width: 400px) {
+
+    .hero-heading {
+        font-size: 2.25rem;
+    }
+
+    .brand-name {
+        font-size: 1.1rem;
+    }
+
+    .login-button {
+        padding: 8px 15px;
+    }
+}

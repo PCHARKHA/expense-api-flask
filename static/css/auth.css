@@ -1,25 +1,35 @@
-/* ================= OVERLAY ================= */
-.popup-overlay {
+/* ==========================================================================
+   SPENDWISE AUTH MODAL
+   ========================================================================== */
+
+   .popup-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background-color: rgba(27, 67, 50, 0.35);
+
+    background-color: rgba(23, 32, 51, 0.62);
+    backdrop-filter: blur(4px);
+
     z-index: 1000;
 }
-
 .popup-overlay.visible {
     display: block;
 }
 
+/* ==========================================================================
+   POPUP CONTAINER
+   ========================================================================== */
 
-/* ================= POPUP ================= */
 .auth-popup {
     display: none;
     position: fixed;
     inset: 0;
+
     align-items: center;
     justify-content: center;
+
     padding: 20px;
+
     z-index: 1001;
 }
 
@@ -27,172 +37,304 @@
     display: flex;
 }
 
+/* ==========================================================================
+   POPUP BOX
+   ========================================================================== */
 
-/* ================= POPUP BOX ================= */
 .auth-popup-box {
+    box-sizing: border-box;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+
     background-color: #FFFFFF;
-    border-radius: 12px;
-    padding: 32px 28px;
+
+    border: 1px solid #E4E7EC;
+    border-radius: 18px;
+
+    padding: 36px 34px 30px;
+
     position: relative;
+
     font-family: 'Manrope', sans-serif;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+    box-shadow:
+        0 24px 60px rgba(16, 24, 40, 0.18),
+        0 4px 12px rgba(16, 24, 40, 0.06);
+
+    animation: authPopupIn 0.2s ease-out;
+}
+@keyframes authPopupIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-/* ================= CLOSE BUTTON ================= */
+/* ==========================================================================
+   CLOSE BUTTON
+   ========================================================================== */
+
 .popup-close {
     position: absolute;
+    top: 16px;
+    right: 18px;
 
-    top: 14px;
-    right: 16px;
+    width: 34px;
+    height: 34px;
 
-    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
     border: none;
+    border-radius: 8px;
 
+    font-family: Arial, sans-serif;
     font-size: 24px;
     line-height: 1;
 
-    color: #1B4332;
+    color: #667085;
 
     cursor: pointer;
 
-    padding: 4px;
-
-    border-radius: 5px;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .popup-close:hover {
-    background-color: #F5F7F4;
+    background-color: #F2F4F7;
+    color: #172033;
 }
 
+.popup-close:focus-visible {
+    outline: 2px solid #14B8A6;
+    outline-offset: 2px;
+}
 
-/* ================= TITLE ================= */
+/* ==========================================================================
+   TITLE
+   ========================================================================== */
+
 .auth-popup-box h2 {
-    margin: 0 0 24px 0;
+    margin: 0 0 28px;
+    padding-right: 30px;
+
     font-family: 'Manrope', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: #1B4332;
+    font-size: 25px;
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+    color: #172033;
     text-align: left;
 }
 
-/* ================= FORM ================= */
+/* ==========================================================================
+   FORM
+   ========================================================================== */
+
 .auth-popup-box form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
 }
 
-/* ================= FORM GROUP ================= */
+/* ==========================================================================
+   FORM GROUP
+   ========================================================================== */
+
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 7px;
 }
 
-/* ================= LABEL ================= */
+/* ==========================================================================
+   LABEL
+   ========================================================================== */
+
 .form-group label {
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
-    font-weight: 600;
-    color: #1B4332;
+    font-weight: 700;
+
+    color: #344054;
 }
 
+/* ==========================================================================
+   INPUT
+   ========================================================================== */
 
-/* ================= INPUT ================= */
 .form-group input {
     width: 100%;
     box-sizing: border-box;
+
+    padding: 12px 13px;
+
     font-family: 'Manrope', sans-serif;
     font-size: 14px;
-    padding: 11px 12px;
-    border: 1px solid #D7DED9;
-    border-radius: 6px;
-    background-color: #F5F7F4;
-    color: #1B4332;
-    transition: border-color 0.2s, box-shadow 0.2s;
+
+    color: #172033;
+
+    background-color: #F9FAFB;
+
+    border: 1px solid #D0D5DD;
+    border-radius: 9px;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .form-group input::placeholder {
-    color: #8A958E;
+    color: #98A2B3;
+}
+
+.form-group input:hover {
+    border-color: #98A2B3;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #1B4332;
-    box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.15);
+    background-color: #FFFFFF;
+    border-color: #14B8A6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
 }
 
+/* ==========================================================================
+   ERROR MESSAGE
+   ========================================================================== */
 
-/* ================= ERROR ================= */
 .form-error {
     min-height: 14px;
     font-family: 'Manrope', sans-serif;
     font-size: 12px;
-    color: #B3261E;
+    line-height: 1.4;
+    color: #B42318;
 }
 
+/* ==========================================================================
+   AUTH BUTTON
+   ========================================================================== */
 
-/* ================= AUTH BUTTON ================= */
 .auth-button {
     width: 100%;
+
+    margin-top: 3px;
+
+    padding: 13px 16px;
+
     font-family: 'Manrope', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
 
     color: #FFFFFF;
-    background-color: #1B4332;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 16px;
+
+    background-color: #1E3A5F;
+
+    border: 1px solid #1E3A5F;
+    border-radius: 9px;
+
     cursor: pointer;
-    margin-top: 4px;
-    transition: background-color 0.2s;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .auth-button:hover {
-    background-color: #163A2A;
+    background-color: #162F4D;
+    border-color: #162F4D;
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(30, 58, 95, 0.18);
 }
 
-.auth-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.25);
+.auth-button:active {
+    transform: translateY(0);
 }
 
-/* ================= LOGIN / REGISTER SWITCH ================= */
+.auth-button:focus-visible {
+    outline: 2px solid #14B8A6;
+    outline-offset: 3px;
+}
+
+/* ==========================================================================
+   LOGIN / REGISTER SWITCH
+   ========================================================================== */
+
 .auth-switch {
+    margin: 22px 0 0;
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
-    color: #1B4332;
+    line-height: 1.5;
+    color: #667085;
     text-align: center;
-    margin: 18px 0 0 0;
 }
+
+/* ==========================================================================
+   SWITCH BUTTON
+   ========================================================================== */
 
 .switch-button {
+    padding: 0;
     font-family: 'Manrope', sans-serif;
     font-size: 13px;
-    font-weight: 700;
-    color: #1B4332;
+    font-weight: 800;
+    color: #1E3A5F;
     background: none;
     border: none;
-    padding: 0;
-    text-decoration: underline;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 
-/* ================= MOBILE ================= */
+.switch-button:hover {
+    color: #14B8A6;
+}
+
+.switch-button:focus-visible {
+    outline: 2px solid #14B8A6;
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
 @media (max-width: 480px) {
     .auth-popup {
         padding: 16px;
     }
 
     .auth-popup-box {
-        padding: 26px 20px;
+        max-width: 100%;
+
+        padding: 32px 22px 26px;
+
+        border-radius: 16px;
     }
 
     .auth-popup-box h2 {
-        font-size: 20px;
+        font-size: 22px;
+        margin-bottom: 24px;
+    }
+
+    .auth-popup-box form {
+        gap: 16px;
+    }
+
+    .form-group input {
+        padding: 12px;
+    }
+
+    .auth-button {
+        padding: 13px 15px;
     }
 }
-

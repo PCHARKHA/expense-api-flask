@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Spending Insights</title>
+  <title>Spending Insights | SpendWise</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/spending_insights.css') }}">
@@ -12,13 +12,29 @@
 
   <div class="insights-page">
 
-    <!-- Header: back link, title, subtitle -->
+    <!-- ==========================================================
+         HEADER: branding, navigation, title, Add Expense
+         ========================================================== -->
     <header class="insights-header">
-      <a href="{{ url_for('pages.dashboard_page') }}" class="back-button">
-        <span class="back-arrow">&larr;</span> Back to Dashboard
-      </a>
-      <h1 class="page-title">Personal Spending Insights</h1>
-      <p class="page-subtitle">Understand where your money goes and discover your spending patterns.</p>
+
+      <nav class="site-nav">
+        <span class="nav-brand">SpendWise</span>
+        <div class="nav-links">
+          <a href="{{ url_for('pages.home') }}" class="nav-link">Home</a>
+          <a href="{{ url_for('pages.dashboard_page') }}" class="nav-link">Dashboard</a>
+          <a href="{{ url_for('pages.expenses_page') }}" class="nav-link">Expenses</a>
+          <span class="nav-link nav-link-current" aria-current="page">Insights</span>
+        </div>
+      </nav>
+
+      <div class="page-heading-row">
+        <div class="page-heading-text">
+          <h1 class="page-title">Spending Insights</h1>
+          <p class="page-subtitle">Understand where your money goes and discover patterns in your everyday spending.</p>
+        </div>
+
+        <a href="{{ url_for('pages.add_expense_page') }}" class="add-expense-btn">+ Add Expense</a>
+      </div>
     </header>
 
     <!-- Main insights layout -->
@@ -26,7 +42,7 @@
 
       <!-- Featured card: Highest Spending Category -->
       <section class="insight-card featured-card" id="highest-category-card">
-        <p class="insight-label">Highest Spending Category</p>
+        <p class="insight-label">Where most of your money is going</p>
         <h2 class="insight-value featured-value" id="highest-category">Category</h2>
         <p class="insight-amount featured-amount" id="highest-category-amount">₹0</p>
         <p class="insight-description" id="highest-category-percentage">--% of your monthly spending</p>
@@ -36,16 +52,16 @@
       <div class="insights-grid">
 
         <!-- Daily Average Spending -->
-        <section class="insight-card accent-blue" id="daily-average-card">
-          <p class="insight-label">Daily Average Spending</p>
+        <section class="insight-card" id="daily-average-card">
+          <p class="insight-label">Daily average</p>
           <p class="insight-value" id="daily-average">₹0 / day</p>
-          <p class="insight-description">Based on this month's transactions so far</p>
+          <p class="insight-description">Based on recorded spending this month so far.</p>
         </section>
 
         <!-- Monthly Spending Comparison -->
-        <section class="insight-card accent-rose" id="monthly-comparison-card">
-          <p class="insight-label">Monthly Comparison</p>
-          <p class="insight-value" id="monthly-comparison">-- vs last month</p>
+        <section class="insight-card" id="monthly-comparison-card">
+          <p class="insight-label">Monthly comparison</p>
+          <p class="insight-value comparison-summary" id="monthly-comparison">-- vs last month</p>
           <div class="comparison-breakdown">
             <div class="comparison-item">
               <span class="comparison-tag">This month</span>
@@ -57,41 +73,74 @@
             </div>
           </div>
         </section>
-        <section class="insight-card accent-green" id="no-spend-days-card">
-          <p class="insight-label">No-Spend Days</p>
+
+        <!-- No-Spend Days -->
+        <section class="insight-card" id="no-spend-days-card">
+          <p class="insight-label">No-spend days</p>
           <p class="insight-value" id="no-spend-days">0 days</p>
-          <p class="insight-description"> Days this month with no recorded expenses</p>
-      </section>
+          <p class="insight-description">Days this month with no recorded expenses.</p>
+        </section>
 
       </div>
 
-      <!-- Spending Pattern: wide card -->
+      <!-- Spending Pattern: wide card with visual progress bars -->
       <section class="insight-card pattern-card" id="spending-pattern-card">
-        <p class="insight-label">Spending Pattern</p>
+        <p class="insight-label">Spending pattern</p>
         <p class="insight-value pattern-value" id="spending-pattern">Your spending pattern will appear here.</p>
-        <div class="comparison-breakdown">
-          <div class="comparison-item">
-            <span class="comparison-tag">Weekdays</span>
-            <span class="comparison-figure" id="weekday-total">₹0</span>
-            <small id="weekday-percentage">0%</small>
+
+        <div class="pattern-bars">
+          <div class="pattern-bar-row">
+            <div class="pattern-bar-header">
+              <span class="comparison-tag">Weekdays</span>
+              <span class="comparison-figure" id="weekday-total">₹0</span>
+              <small id="weekday-percentage">0%</small>
+            </div>
+            <div class="progress-track">
+              <!-- Optional: id="weekday-bar-fill" is a safe target for a small,
+                   optional JS addition described alongside this deliverable.
+                   Without it, the track simply stays empty; the numbers above
+                   still show the real percentage either way. -->
+              <div class="progress-fill" id="weekday-bar-fill"></div>
+            </div>
           </div>
-      
-          <div class="comparison-item">
-            <span class="comparison-tag">Weekends</span>
-            <span class="comparison-figure" id="weekend-total">₹0</span>
-            <small id="weekend-percentage">0%</small>
+
+          <div class="pattern-bar-row">
+            <div class="pattern-bar-header">
+              <span class="comparison-tag">Weekends</span>
+              <span class="comparison-figure" id="weekend-total">₹0</span>
+              <small id="weekend-percentage">0%</small>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="weekend-bar-fill"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="insight-card accent-blue" id="small-expenses-card">
-        <p class="insight-label">Small Expenses Add Up</p>
-        <p class="insight-value" id="small-expense-count"> 0 small expenses </p>
-        <p class="insight-description"> Total:
-            <span id="small-expense-total">₹ 0</span>
-        this month</p>
-    </section>
-  </main>
+      <!-- Small Expenses Add Up -->
+      <section class="insight-card" id="small-expenses-card">
+        <p class="insight-label">Small expenses add up</p>
+        <p class="insight-value" id="small-expense-count">0 small expenses</p>
+        <p class="insight-description">Total: <span id="small-expense-total">₹ 0</span> this month</p>
+      </section>
+
+      <!-- What your spending tells you -->
+      <section class="context-section">
+        <h2 class="context-title">What your spending tells you</h2>
+        <p class="context-text">
+          SpendWise looks at your recorded expenses from different angles — where you spend the most,
+          your daily average, your spending pattern, and how often you have days without recorded spending.
+          Use these insights to understand your habits more clearly.
+        </p>
+      </section>
+
+      <!-- Secondary navigation actions -->
+      <div class="insights-footer-actions">
+        <a href="{{ url_for('pages.expenses_page') }}" class="footer-link">View All Expenses</a>
+        <a href="{{ url_for('pages.dashboard_page') }}" class="footer-link footer-link-muted">Dashboard</a>
+      </div>
+
+    </main>
 
   </div>
   <script type="module" src="{{ url_for('static', filename='js/spending_insights.js') }}"></script>

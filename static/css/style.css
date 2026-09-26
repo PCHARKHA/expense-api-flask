@@ -1,26 +1,37 @@
 /* ==========================================================================
-   PERSONAL FINANCE MANAGER — Add Expense page styles
+   SPENDWISE — Add Expense page styles
    ==========================================================================
-   Design tokens (color, spacing, radius, motion) live in :root so the
-   whole page can be retuned from one place.
+   Design tokens live in :root so the whole page can be retuned from one
+   place, and match the SpendWise landing-page identity (navy + teal).
+
+   Mobile-first: base rules target small phones (~375–430px), then layout,
+   spacing and typography are scaled up at each breakpoint.
    ========================================================================== */
 
    :root {
-    /* Colors */
-    --color-bg: #F5F7F4;
-    --color-surface: #FFFFFF;
-    --color-primary: #1B4332;
-    --color-primary-dark: #123D29;
-    --color-primary-hover: #13472E;
-    --color-primary-light: #76B296;
-    --color-accent-soft: #E8F0EB;
-    --color-text: #1C1F1D;
-    --color-text-muted: #6E766F;
-    --color-border: #E2E5E0;
-    --color-danger: #B3261E;
-    --color-danger-soft: #FBEAE9;
-    --color-danger-border: #E8B4B0;
-    --color-success-border: #B8D4C1;
+    /* Colors — SpendWise system */
+    --primary: #1E3A5F;
+    --primary-hover: #162F4D;
+    --accent: #14B8A6;
+    --accent-soft: rgba(20, 184, 166, 0.10);
+  
+    --background: #F7F9FC;
+    --surface: #FFFFFF;
+    --surface-soft: #F1F5F9;
+  
+    --text: #172033;
+    --text-muted: #667085;
+    --text-light: #98A2B3;
+  
+    --border: #E4E7EC;
+  
+    --danger: #B42318;
+    --danger-soft: #FEF3F2;
+    --danger-border: #FDA29B;
+  
+    --success: #027A48;
+    --success-soft: #ECFDF3;
+    --success-border: #6CE9A6;
   
     /* Typography */
     --font-main: 'Manrope', 'Segoe UI', Arial, sans-serif;
@@ -35,10 +46,10 @@
     /* Shape */
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 16px;
+    --radius-lg: 18px;
   
     /* Form controls */
-    --input-padding-y: 12px;
+    --input-padding-y: 13px;
     --input-padding-x: 14px;
     --input-padding-x-icon: 40px; /* right padding when a control has a dropdown arrow */
   
@@ -57,16 +68,23 @@
   body {
     margin: 0;
     font-family: var(--font-main);
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    background-color: var(--background);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
   
-  /* Keeps focus visible for keyboard users instead of removing the outline */
+  button,
+  select,
+  textarea,
+  input {
+    font-family: inherit;
+  }
+  
   button:focus-visible,
   select:focus-visible,
-  textarea:focus-visible {
-    outline: 2px solid var(--color-primary);
+  textarea:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
   
@@ -84,17 +102,41 @@
   
   .expense-card {
     width: 100%;
-    max-width: 420px;
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+    max-width: 440px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    box-shadow: 0 1px 2px rgba(20, 30, 25, 0.04);
+    padding: var(--space-lg) var(--space-md);
+    box-shadow: 0 1px 2px rgba(23, 32, 51, 0.04);
   }
   
   /* ==========================================================================
      Header & navigation
      ========================================================================== */
+  
+  .page-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-md);
+    font-size: 0.85rem;
+  }
+  
+  .page-navigation a {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  
+  .page-navigation a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+  
+  .page-navigation span {
+    color: var(--text-light);
+  }
   
   .expense-header {
     margin-bottom: var(--space-lg);
@@ -102,38 +144,17 @@
   
   .expense-title {
     margin: 0 0 4px 0;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 800;
     letter-spacing: -0.02em;
+    color: var(--text);
   }
   
   .expense-subtitle {
     margin: 0;
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-  }
-  
-  .page-navigation {
-    display: flex;
-    gap: 18px;
-    margin-bottom: var(--space-xs);
-  }
-  
-  .page-navigation a {
-    color: var(--color-primary);
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color var(--transition-fast);
-  }
-  
-  .page-navigation a:hover {
-    color: var(--color-primary-hover);
-    text-decoration: underline;
-  }
-  
-  .page-navigation span {
-    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--text-muted);
   }
   
   /* ==========================================================================
@@ -153,14 +174,14 @@
   }
   
   .form-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
   }
   
   .label-optional {
     font-weight: 400;
-    color: var(--color-text-muted);
+    color: var(--text-light);
   }
   
   /* ==========================================================================
@@ -173,41 +194,83 @@
     gap: var(--space-md);
   }
   
-  /* Styled like a small calculator screen so the entered amount always
-     stands out clearly from the rest of the form */
+  /* The amount is the most important number on the page, so it gets its own
+     elevated "screen" — styled like a compact calculator/payment display
+     rather than a plain colored box. The "EXPENSE AMOUNT" label and the
+     "Tap to enter amount" hint are generated purely in CSS (::before /
+     ::after) so no HTML changes were needed; the section already carries
+     aria-label="Expense amount" for assistive tech. */
   .amount-display {
-    background-color: var(--color-primary);
+    position: relative;
+    background: linear-gradient(155deg, var(--primary) 0%, var(--primary-hover) 100%);
     color: #FFFFFF;
     border-radius: var(--radius-md);
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+  
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: center;
-    gap: 6px;
+    row-gap: 4px;
+  
     cursor: pointer;
-    transition: background-color var(--transition-fast);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
   
-  .amount-display:hover {
-    background-color: var(--color-primary-dark);
+  .amount-display::before {
+    content: "Expense Amount";
+    flex-basis: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    margin-bottom: 6px;
+  }
+  
+  .amount-display::after {
+    content: "Tap to enter amount";
+    flex-basis: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.58);
+    margin-top: 8px;
+  }
+  
+  @media (hover: hover) {
+    .amount-display:hover {
+      box-shadow: 0 10px 24px rgba(30, 58, 95, 0.22);
+    }
+  }
+  
+  .amount-display:active {
+    transform: scale(0.995);
+  }
+  
+  /* Subtle accent ring while the keypad is open, purely via CSS
+     (degrades harmlessly on browsers without :has() support) */
+  #amount-display:has(+ #numeric-keypad.active) {
+    box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 24px rgba(30, 58, 95, 0.22);
   }
   
   .currency-symbol {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 500;
-    opacity: 0.75;
+    opacity: 0.8;
+    margin-right: 2px;
   }
   
   .amount-value {
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: -0.01em;
     line-height: 1;
-    /* Prevents the amount from wrapping oddly on very small screens */
     word-break: break-all;
   }
   
-  /* Keypad grid: 3 keys per row */
+  /* Keypad grid: 3 keys per row, styled like a modern numeric/payment pad */
   .numeric-keypad {
     display: none;
     grid-template-columns: repeat(3, 1fr);
@@ -220,20 +283,23 @@
   
   .keypad-key {
     font-family: inherit;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--color-text);
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 14px 0;
+    padding: 16px 0;
+    min-height: 52px;
     cursor: pointer;
-    transition: background-color var(--transition-fast), transform 0.05s ease;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), transform 0.05s ease;
   }
   
-  .keypad-key:hover {
-    background-color: var(--color-accent-soft);
-    border-color: var(--color-primary);
+  @media (hover: hover) {
+    .keypad-key:hover {
+      background-color: var(--accent-soft);
+      border-color: var(--accent);
+    }
   }
   
   .keypad-key:active {
@@ -241,17 +307,17 @@
   }
   
   .keypad-decimal {
-    color: var(--color-text-muted);
+    color: var(--text-muted);
   }
   
   .keypad-clear {
-    color: var(--color-danger);
-    background-color: var(--color-danger-soft);
+    color: var(--danger);
+    background-color: var(--danger-soft);
     border-color: transparent;
   }
   
   .keypad-clear:hover {
-    background-color: var(--color-danger);
+    background-color: var(--danger);
     color: #FFFFFF;
   }
   
@@ -266,14 +332,13 @@
   .payment select {
     display: block;
     width: 100%;
-    font-family: inherit;
     font-size: 0.95rem;
-    color: var(--color-text);
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    color: var(--text);
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: var(--input-padding-y) var(--input-padding-x);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
   }
   
   .category-select,
@@ -284,7 +349,7 @@
     /* Remove default browser arrow and draw a custom one instead */
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E766F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat: no-repeat;
     background-position: right 14px center;
     background-size: 18px;
@@ -296,33 +361,38 @@
   }
   
   .expense-note::placeholder {
-    color: var(--color-text-muted);
+    color: var(--text-light);
   }
   
   .category-select:hover,
   .expense-note:hover,
   .payment select:hover {
-    border-color: var(--color-primary);
+    border-color: var(--primary);
+    background-color: var(--surface);
   }
   
   .category-select:focus-visible,
   .expense-note:focus-visible,
   .payment select:focus-visible {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.08);
+    border-color: var(--accent);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 3px var(--accent-soft);
   }
   
+  /* The "Payment Method" block in the HTML isn't wrapped in .form-group,
+     so it gets the equivalent spacing and label treatment directly. */
   .payment {
-    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
   }
   
   .payment label {
-    display: block;
-    margin-bottom: var(--space-xs);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
   }
   
   /* ==========================================================================
@@ -330,20 +400,23 @@
      ========================================================================== */
   
   .submit-expense-btn {
-    font-family: inherit;
+    width: 100%;
     font-size: 1rem;
     font-weight: 700;
     color: #FFFFFF;
-    background-color: var(--color-primary);
-    border: none;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: var(--radius-sm);
-    padding: 16px;
+    padding: 15px 16px;
+    min-height: 50px;
     cursor: pointer;
-    transition: background-color var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   }
   
   .submit-expense-btn:hover {
-    background-color: var(--color-primary-dark);
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: 0 6px 14px rgba(30, 58, 95, 0.2);
   }
   
   .submit-expense-btn:active {
@@ -356,49 +429,88 @@
   
   .form-message {
     display: none;
+    margin-top: calc(-1 * var(--space-md) + var(--space-sm));
+    margin-bottom: var(--space-sm);
     padding: var(--input-padding-y) var(--input-padding-x);
     border-radius: var(--radius-sm);
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.4;
   }
   
   .form-message.success {
     display: block;
-    color: var(--color-primary);
-    background-color: var(--color-accent-soft);
-    border: 1px solid var(--color-success-border);
+    color: var(--success);
+    background-color: var(--success-soft);
+    border: 1px solid var(--success-border);
   }
   
   .form-message.error {
     display: block;
-    color: var(--color-danger);
-    background-color: var(--color-danger-soft);
-    border: 1px solid var(--color-danger-border);
+    color: var(--danger);
+    background-color: var(--danger-soft);
+    border: 1px solid var(--danger-border);
   }
   
   /* ==========================================================================
-     Responsive adjustments
+     Responsive — small phones (default styles above already target ~375–430px)
      ========================================================================== */
   
-  /* Small phones: tighten padding so nothing feels cramped */
-  @media (max-width: 360px) {
+  @media (max-width: 359px) {
     .expense-card {
-      padding: var(--space-md);
+      padding: var(--space-md) var(--space-sm);
     }
   
     .amount-value {
-      font-size: 2.25rem;
+      font-size: 2.1rem;
+    }
+  
+    .keypad-key {
+      padding: 14px 0;
+      min-height: 48px;
     }
   }
   
-  /* Larger screens: give the card a bit more breathing room and center
-     it vertically instead of pinning it to the top */
-  @media (min-width: 768px) {
+  /* Small tablets and large phones in landscape */
+  @media (min-width: 480px) {
     .page-wrapper {
-      align-items: center;
+      padding: var(--space-xl) var(--space-md);
     }
   
     .expense-card {
-      padding: var(--space-xl);
+      padding: var(--space-xl) var(--space-lg);
+    }
+  
+    .expense-title {
+      font-size: 1.55rem;
+    }
+  
+    .amount-value {
+      font-size: 2.75rem;
+    }
+  }
+  
+  /* Tablets */
+  @media (min-width: 640px) {
+    .expense-card {
+      max-width: 460px;
+    }
+  }
+  
+  /* Laptops and desktops — center vertically, give the card room to breathe
+     without letting it float alone in a huge empty page */
+  @media (min-width: 1024px) {
+    .page-wrapper {
+      align-items: center;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 20%, var(--accent-soft), transparent 45%),
+        var(--background);
+    }
+  
+    .expense-card {
+      max-width: 480px;
+      padding: var(--space-xl) var(--space-xl);
+      box-shadow: 0 20px 48px rgba(23, 32, 51, 0.10), 0 2px 6px rgba(23, 32, 51, 0.04);
     }
   }

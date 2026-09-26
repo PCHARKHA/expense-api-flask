@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Expenses | Personal Finance Manager</title>
+  <title>All Expenses | SpendWise</title>
 
   <!-- Google Font: Manrope, kept consistent with the other pages -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,8 +17,12 @@
        NAVIGATION
        ========================================================== -->
   <nav class="site-nav">
-    <a href="{{ url_for('pages.home') }}" class="nav-link">Home</a>
-    <a href="{{ url_for('pages.dashboard_page') }}" class="nav-link">Dashboard</a>
+    <span class="nav-brand">SpendWise</span>
+    <div class="nav-links">
+      <a href="{{ url_for('pages.home') }}" class="nav-link">Home</a>
+      <a href="{{ url_for('pages.dashboard_page') }}" class="nav-link">Dashboard</a>
+      <span class="nav-link nav-link-current" aria-current="page">Expenses</span>
+    </div>
   </nav>
 
   <main class="all-expenses-wrapper">
@@ -27,8 +31,12 @@
          PAGE HEADING
          ========================================================== -->
     <header class="page-header">
-      <h1 class="page-heading">All Expenses</h1>
-      <p class="page-subtitle">View and manage all your recorded expenses.</p>
+      <div class="page-header-text">
+        <h1 class="page-heading">All Expenses</h1>
+        <p class="page-subtitle">View and manage all your recorded expenses.</p>
+      </div>
+
+      <a href="{{ url_for('pages.add_expense_page') }}" class="add-expense-btn" id="add-expense-btn">+ Add Expense</a>
     </header>
 
     <!-- ==========================================================
@@ -55,12 +63,24 @@
     <!-- ==========================================================
          EXPENSES LIST
          ==========================================================
-         This container starts empty. Expense items will be added
-         here dynamically with JavaScript once the Flask backend
-         is connected. -->
+         This container starts empty. Expense items are added here
+         dynamically by all_expenses.js. -->
     <section class="expenses-section" aria-label="Expense list">
       <div id="action-message" class="action-message"></div>
-      
+
+      <h2 class="section-title">Your Expenses</h2>
+
+      <!-- Desktop-only column header, purely visual — each dynamically
+           inserted .expense-item lines up under these labels via the
+           same grid columns. Hidden on mobile where rows stack instead. -->
+      <div class="expense-list-header" aria-hidden="true">
+        <span>Category</span>
+        <span>Description</span>
+        <span>Amount</span>
+        <span>Date</span>
+        <span>Actions</span>
+      </div>
+
       <div id="all-expenses-list" class="all-expenses-list">
         <!-- Expense items will be inserted here by JavaScript -->
       </div>
@@ -69,11 +89,15 @@
            EMPTY STATE
            ==========================================================
            Hidden/shown by JavaScript depending on whether there are
-           expenses to display. -->
+           expenses to display. Also used when a filter has no matches. -->
       <div id="empty-state" class="empty-state">
-        <p class="empty-state-message">No expenses found.</p>
+        <h3 class="empty-state-title">No expenses found</h3>
+        <p class="empty-state-message">Try selecting a different category, or add your first expense to get started.</p>
+        <a href="{{ url_for('pages.add_expense_page') }}" class="empty-state-cta">+ Add Expense</a>
       </div>
     </section>
+
+    <p class="context-message">Small expenses add up. Reviewing your spending regularly can help you understand where your money is going.</p>
 
   </main>
 

@@ -1,10 +1,22 @@
 from flask import Blueprint, jsonify, request 
 from datetime import datetime,timedelta
 from utils.dashboard import ( calculate_monthly_total,calculate_daily_average ) 
-from utils.database import (create_expense,get_expenses, get_expense_by_id,
-                            update_expense_in_db,delete_expense_in_db)
-from utils.insight_utils import (get_current_month_range,get_highest_spending_category,get_monthly_spending_comparison,
-                            get_current_month_expenses,get_small_expenses,get_spending_days) 
+from utils.database import (
+    create_expense,
+    get_expenses,
+    get_expense_by_id,
+    update_expense_in_db,
+    delete_expense_in_db
+)
+
+from utils.insight_utils import (
+    get_current_month_range,
+    get_highest_spending_category,
+    get_monthly_spending_comparison,
+    get_current_month_expenses,
+    get_small_expenses,
+    get_spending_days
+)
 from data.expense_model import Expense 
 from pydantic import ValidationError
 from flask_jwt_extended import jwt_required, get_jwt_identity
